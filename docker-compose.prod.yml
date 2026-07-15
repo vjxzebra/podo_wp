@@ -1,0 +1,52 @@
+# Прод-оверлей. Використання:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+  wordpress:
+    ports: !reset []   # назовні дивиться лише Caddy
+    environment:
+      WORDPRESS_DEBUG: !reset ""
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENV', 'production');
+        define('WP_DEBUG', false);
+        define('DISALLOW_FILE_EDIT', true);
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+        define('WPMS_ON', true);
+        define('WPMS_MAIL_FROM', '${SMTP_FROM}');
+        define('WPMS_MAIL_FROM_NAME', '${WP_TITLE}');
+        define('WPMS_MAILER', 'smtp');
+        define('WPMS_SMTP_HOST', '${SMTP_HOST}');
+        define('WPMS_SMTP_PORT', ${SMTP_PORT:-587});
+        define('WPMS_SMTP_ENCRYPTION', 'tls');
+        define('WPMS_SMTP_AUTH', true);
+        define('WPMS_SMTP_USER', '${SMTP_USER}');
+        define('WPMS_SMTP_PASS', '${SMTP_PASS}');
+        define('WPMS_SMTP_AUTOTLS', true);
+
+  wpcli:
+    environment:
+      WP_ENV: production
+
+  mailhog:
+    profiles: ["disabled"]
+
+  phpmyadmin:
+    profiles: ["disabled"]
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - wordpress
+
+volumes:
+  caddy-data:
+  caddy-config:

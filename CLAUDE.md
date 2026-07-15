@@ -10,11 +10,15 @@
 ## Команди
 
 ```bash
-docker compose up -d                                  # запуск середовища
-docker compose run --rm wpcli sh /scripts/setup.sh    # бутстрап WP (ідемпотентний)
-docker compose run --rm wpcli wp <command>            # будь-яка wp-cli команда
-docker compose logs wordpress --tail 50               # логи PHP
+docker compose up -d                                       # запуск середовища
+docker compose run --rm wpcli sh /scripts/setup.sh         # бутстрап WP (ідемпотентний)
+docker compose run --rm wpcli sh /scripts/seed-content.sh  # наповнення контентом з макета
+docker compose run --rm wpcli wp <command>                 # будь-яка wp-cli команда
+docker compose logs wordpress --tail 50                    # логи PHP
+./scripts/deploy.sh user@server /opt/podo                  # деплой (див. DEPLOY.md)
 ```
+
+У Git Bash до `docker compose run` з абсолютними шляхами контейнера додавати `MSYS_NO_PATHCONV=1`.
 
 ## URL-и (dev)
 

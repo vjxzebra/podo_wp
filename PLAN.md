@@ -207,13 +207,14 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080   # 200
 
 Передумови (надає користувач перед фазою): сервер Ubuntu 22.04+ з SSH-доступом, домен, SMTP-креденшели. **Агент не виконує деплой без цих даних — запитати.**
 
-- [ ] `docker-compose.prod.yml`: без mailhog/phpmyadmin; + сервіс `caddy` (порти 80/443, volume для сертифікатів); wordpress без публічного порту (тільки внутрішня мережа); `restart: unless-stopped`.
-- [ ] `Caddyfile`: домен → `wordpress:80`, авто-HTTPS.
-- [ ] Prod `.env` на сервері: `WP_ENV=production`, реальні паролі, `WP_URL=https://<домен>`, SMTP для WP Mail SMTP (`wp plugin install wp-mail-smtp` у prod-setup).
-- [ ] `scripts/deploy.sh`: rsync теми/mu-plugins/скриптів на сервер → `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d` → `wp cache flush`.
-- [ ] Перенос контенту: `wp db export` локально → import на сервері → `wp search-replace 'http://localhost:8080' 'https://<домен>'` → rsync `wp-content/uploads`.
-- [ ] GitHub Actions `.github/workflows/deploy.yml`: on push to `main` → SSH deploy (секрети: `SSH_KEY`, `SSH_HOST`; ключ ACF на сервері вже в `.env`, у CI не передається).
-- [ ] Бекапи: cron на сервері — щоденний `mysqldump` + tar uploads, ротація 14 днів.
+- [x] `docker-compose.prod.yml`: без mailhog/phpmyadmin (profiles); + сервіс `caddy` (порти 80/443, volume для сертифікатів); wordpress без публічного порту (`ports: !reset`); HTTPS-детект за X-Forwarded-Proto; WPMS_* константи з `.env`. Конфіг звалідовано (`compose config`).
+- [x] `Caddyfile`: `{$SITE_DOMAIN}` → `wordpress:80`, авто-HTTPS + security-заголовки.
+- [x] Prod-змінні задокументовано в `.env.example` (секція Production); `setup.sh` на проді ставить WP Mail SMTP.
+- [x] `scripts/deploy.sh`: rsync коду (без uploads/plugins/.env) → compose up з prod-оверлеєм → setup.sh → cache flush.
+- [x] Інструкція переносу контенту та першого деплою — **DEPLOY.md**.
+- [x] GitHub Actions `.github/workflows/deploy.yml`: on push to `main` → SSH deploy (секрети: `SSH_KEY`, `SSH_HOST`, опц. `REMOTE_DIR`; ключ ACF на сервері вже в `.env`, у CI не передається).
+- [x] Бекапи: `scripts/backup.sh` (mariadb-dump + tar uploads, ротація 14 днів) + cron-рядок у DEPLOY.md.
+- [ ] **Виконати деплой** — заблоковано до отримання від користувача: SSH-доступ до сервера, домен, SMTP-креденшели.
 - [ ] Пост-деплой смоук: сайт по HTTPS, форма шле лист на реальну пошту, адмінка працює.
 
 **DoD:** сайт живий на домені з валідним SSL, заявка з проду доходить на email, CI-деплой проходить з коміту в `main`.

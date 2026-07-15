@@ -70,6 +70,12 @@ wp plugin is-installed cyr2lat 2>/dev/null || wp plugin install cyr2lat >/dev/nu
 wp plugin activate cyr2lat >/dev/null 2>&1 || true
 wp plugin delete akismet hello >/dev/null 2>&1 || true
 
+if [ "${WP_ENV:-development}" = "production" ]; then
+  log "Прод: WP Mail SMTP (конфіг через WPMS_* константи з .env)"
+  wp plugin is-installed wp-mail-smtp 2>/dev/null || wp plugin install wp-mail-smtp >/dev/null
+  wp plugin activate wp-mail-smtp >/dev/null 2>&1 || true
+fi
+
 log "Сторінки"
 # Прибираємо стандартну демо-сторінку
 _sample=$(wp post list --post_type=page --name=sample-page --field=ID --posts_per_page=1)

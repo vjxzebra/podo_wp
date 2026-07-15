@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "${SSH_HOST#*@}" >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_DIR: ${{ secrets.REMOTE_DIR || '/opt/podo' }}
+          GIT_SSH_COMMAND: ssh -i ~/.ssh/id_deploy
+        run: |
+          export RSYNC_RSH="ssh -i ~/.ssh/id_deploy"
+          sh ./scripts/deploy.sh "$SSH_HOST" "$REMOTE_DIR"
