@@ -1,0 +1,17 @@
+# Secrets / environment
+.env
+
+# IDE
+.idea/
+
+# WordPress runtime (генерується контейнерами) — у git тільки наш код
+wp-content/*
+!wp-content/mu-plugins/
+!wp-content/themes/
+wp-content/themes/*
+!wp-content/themes/podo-theme/
+db-data/
+
+# OS
+.DS_Store
+Thumbs.db
