@@ -19,7 +19,7 @@
         { "key": "field_podo_opt_viber", "label": "Viber (посилання)", "name": "social_viber", "type": "url" },
 
         { "key": "field_podo_opt_tab_map", "label": "Карта", "name": "", "type": "tab" },
-        { "key": "field_podo_opt_map_embed", "label": "Код вставки Google Maps (iframe)", "name": "map_embed", "type": "textarea", "rows": 5, "instructions": "Google Maps → Поділитися → Вбудувати карту → скопіюйте весь код iframe і вставте сюди. Дозволяються лише карти з google.com/maps/embed." },
+        { "key": "field_podo_opt_map_embed", "label": "Код вставки Google Maps (iframe)", "name": "map_embed", "type": "textarea", "rows": 5, "instructions": "Google Maps → Поділитися → Вбудувати карту → скопіюйте весь код iframe і вставте сюди. Дозволяються лише карти Google (google.com/maps…)." },
 
         { "key": "field_podo_opt_tab_booking", "label": "Заявки", "name": "", "type": "tab" },
         { "key": "field_podo_opt_booking_email", "label": "Email для сповіщень про заявки", "name": "booking_email", "type": "email", "instructions": "Якщо порожньо — використовується email адміністратора сайту." },

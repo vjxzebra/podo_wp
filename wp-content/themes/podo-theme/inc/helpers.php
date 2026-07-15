@@ -68,7 +68,7 @@ function podo_map_embed(): string {
         $src = html_entity_decode($m[1], ENT_QUOTES);
         $host = wp_parse_url($src, PHP_URL_HOST) ?: '';
         $path = wp_parse_url($src, PHP_URL_PATH) ?: '';
-        $is_google_embed = preg_match('/(^|\.)google\.[a-z.]+$/i', $host) && str_starts_with($path, '/maps/embed');
+        $is_google_embed = preg_match('/(^|\.)google\.[a-z.]+$/i', $host) && str_starts_with($path, '/maps');
         if ($is_google_embed) {
             return '<div class="map-box"><iframe src="' . esc_url($src) . '" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="' . esc_attr__('Карта проїзду', 'podo') . '"></iframe></div>';
         }

@@ -1,0 +1,15 @@
+{
+    "key": "group_podo_seo",
+    "title": "SEO",
+    "fields": [
+        { "key": "field_podo_seo_description", "label": "Meta description", "name": "seo_description", "type": "textarea", "rows": 2, "maxlength": 170, "instructions": "Короткий опис сторінки для пошуковиків (до 170 символів). Якщо порожньо — використовується опис сайту або уривок статті." }
+    ],
+    "location": [
+        [ { "param": "post_type", "operator": "==", "value": "page" } ],
+        [ { "param": "post_type", "operator": "==", "value": "post" } ]
+    ],
+    "position": "normal",
+    "menu_order": 90,
+    "active": true,
+    "show_in_rest": 0
+}

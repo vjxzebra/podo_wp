@@ -13,3 +13,4 @@ require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/cpt.php';
 require_once get_template_directory() . '/inc/acf-options.php';
 require_once get_template_directory() . '/inc/booking.php';
+require_once get_template_directory() . '/inc/seo.php';
