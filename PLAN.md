@@ -144,10 +144,10 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080   # 200
 
 ### Фаза 2 — Модель даних: CPT + ACF
 
-- [ ] `inc/cpt.php`: CPT `service`, `review`, `booking` + таксономія `service_cat` (укр. лейбли, іконки dashicons, `show_in_rest` для service/review).
-- [ ] Увімкнути ACF Local JSON (`acf-json/` у темі), створити всі field groups з розділу 4 (можна PHP-експортом через `acf_add_local_field_group` → зберегти в JSON).
-- [ ] `inc/acf-options.php`: options page «Налаштування сайту» з полями з розділу 4.
-- [ ] Адмін-колонки: для `service` — категорія та ціна; для `review` — послуга; для `booking` — телефон, послуга, статус (з кольоровим бейджем), фільтр за статусом.
+- [x] `inc/cpt.php`: CPT `service`, `review`, `booking` + таксономія `service_cat` (укр. лейбли, іконки dashicons, `show_in_rest` для service/review). `booking` без create_posts (лише з форми).
+- [x] Увімкнути ACF Local JSON (`acf-json/` у темі), створити всі field groups з розділу 4 (написані вручну як JSON, 11 груп). Сторінкові групи прив'язані до page_template (`templates/*.php`), Головна — `page_type == front_page`, Блог — `page_type == posts_page` (портабельно між середовищами, без ID).
+- [x] `inc/acf-options.php`: options page «Налаштування сайту» з полями з розділу 4.
+- [x] Адмін-колонки: для `service` — категорія та ціна; для `review` — послуга; для `booking` — телефон, послуга, статус (з кольоровим бейджем), фільтр за статусом.
 
 **DoD:** у адмінці видно 3 CPT з полями; `acf-json/` містить усі групи; редагування поля в UI оновлює JSON. `wp post-type list` показує CPT.
 

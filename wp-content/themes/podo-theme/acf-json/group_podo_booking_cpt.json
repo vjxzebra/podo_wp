@@ -1,0 +1,17 @@
+{
+    "key": "group_podo_booking_cpt",
+    "title": "Дані заявки",
+    "fields": [
+        { "key": "field_podo_bkg_status", "label": "Статус", "name": "booking_status", "type": "select", "choices": { "new": "Нова", "done": "Опрацьована" }, "default_value": "new", "return_format": "value" },
+        { "key": "field_podo_bkg_name", "label": "Ім'я", "name": "booking_name", "type": "text" },
+        { "key": "field_podo_bkg_phone", "label": "Телефон", "name": "booking_phone", "type": "text" },
+        { "key": "field_podo_bkg_service", "label": "Послуга", "name": "booking_service", "type": "text" },
+        { "key": "field_podo_bkg_comment", "label": "Коментар", "name": "booking_comment", "type": "textarea", "rows": 4 }
+    ],
+    "location": [
+        [ { "param": "post_type", "operator": "==", "value": "booking" } ]
+    ],
+    "position": "normal",
+    "active": true,
+    "show_in_rest": 0
+}

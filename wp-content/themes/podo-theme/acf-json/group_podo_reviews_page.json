@@ -1,0 +1,24 @@
+{
+    "key": "group_podo_reviews_page",
+    "title": "Сторінка «Відгуки»",
+    "fields": [
+        { "key": "field_podo_revpage_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "text", "default_value": "Відгуки пацієнтів" },
+        { "key": "field_podo_revpage_hero_subtitle", "label": "Підзаголовок", "name": "hero_subtitle", "type": "textarea", "rows": 3, "default_value": "Понад 240 реальних відгуків. Ось лише частина історій пацієнтів, яким вдалося повернути здоров'я стопам." },
+        { "key": "field_podo_revpage_rating", "label": "Рейтинг (велика цифра)", "name": "summary_rating", "type": "text", "default_value": "4.9" },
+        { "key": "field_podo_revpage_count", "label": "Підпис під рейтингом", "name": "summary_count_label", "type": "text", "default_value": "на основі 240+ відгуків" },
+        { "key": "field_podo_revpage_distribution", "label": "Розподіл оцінок", "name": "distribution", "type": "repeater", "layout": "table", "button_label": "Додати рядок", "sub_fields": [
+            { "key": "field_podo_revpage_dist_label", "label": "Зірки (наприклад: 5 ★)", "name": "stars_label", "type": "text" },
+            { "key": "field_podo_revpage_dist_percent", "label": "Відсоток (0–100)", "name": "percent", "type": "number", "min": 0, "max": 100 }
+        ] },
+        { "key": "field_podo_revpage_cta_title", "label": "CTA: заголовок", "name": "cta_title", "type": "text", "default_value": "Були на прийомі? Залиште відгук" },
+        { "key": "field_podo_revpage_cta_text", "label": "CTA: текст", "name": "cta_text", "type": "textarea", "rows": 2, "default_value": "Ваша думка допомагає іншим пацієнтам зробити перший крок." },
+        { "key": "field_podo_revpage_cta_btn", "label": "CTA: кнопка", "name": "cta_btn_label", "type": "text", "default_value": "Написати відгук" }
+    ],
+    "location": [
+        [ { "param": "page_template", "operator": "==", "value": "templates/reviews.php" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}

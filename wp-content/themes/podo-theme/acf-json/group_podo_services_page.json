@@ -1,0 +1,18 @@
+{
+    "key": "group_podo_services_page",
+    "title": "Сторінка «Послуги»",
+    "fields": [
+        { "key": "field_podo_svcpage_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "text", "default_value": "Послуги подолога" },
+        { "key": "field_podo_svcpage_hero_subtitle", "label": "Підзаголовок", "name": "hero_subtitle", "type": "textarea", "rows": 3, "default_value": "Повний спектр медичного догляду за стопами й нігтями. Оберіть напрямок або запишіться на консультацію — визначимо проблему разом." },
+        { "key": "field_podo_svcpage_cta_title", "label": "CTA: заголовок", "name": "cta_title", "type": "text", "default_value": "Не впевнені, яка послуга потрібна?" },
+        { "key": "field_podo_svcpage_cta_text", "label": "CTA: текст", "name": "cta_text", "type": "textarea", "rows": 2, "default_value": "Запишіться на консультацію — оглянемо стопи, поставимо діагноз і підберемо рішення." },
+        { "key": "field_podo_svcpage_cta_btn", "label": "CTA: кнопка", "name": "cta_btn_label", "type": "text", "default_value": "Консультація →" }
+    ],
+    "location": [
+        [ { "param": "page_template", "operator": "==", "value": "templates/services.php" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}

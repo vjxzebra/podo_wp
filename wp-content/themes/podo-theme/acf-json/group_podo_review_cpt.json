@@ -1,0 +1,15 @@
+{
+    "key": "group_podo_review_cpt",
+    "title": "Дані відгуку",
+    "fields": [
+        { "key": "field_podo_rev_text", "label": "Текст відгуку", "name": "review_text", "type": "textarea", "rows": 4, "required": 1 },
+        { "key": "field_podo_rev_service", "label": "Послуга (бейдж)", "name": "review_service", "type": "text" },
+        { "key": "field_podo_rev_rating", "label": "Оцінка", "name": "review_rating", "type": "number", "min": 1, "max": 5, "step": 1, "default_value": 5 }
+    ],
+    "location": [
+        [ { "param": "post_type", "operator": "==", "value": "review" } ]
+    ],
+    "position": "normal",
+    "active": true,
+    "show_in_rest": 0
+}

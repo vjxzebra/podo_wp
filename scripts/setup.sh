@@ -93,6 +93,13 @@ PRICES_ID=$(create_page "tsiny" "Ціни")
 REVIEWS_ID=$(create_page "vidhuky" "Відгуки")
 CONTACTS_ID=$(create_page "kontakty" "Контакти")
 
+# Шаблони сторінок (ACF location rules прив'язані до page_template)
+wp post meta update "$SERVICES_ID" _wp_page_template "templates/services.php" >/dev/null
+wp post meta update "$ABOUT_ID" _wp_page_template "templates/about.php" >/dev/null
+wp post meta update "$PRICES_ID" _wp_page_template "templates/prices.php" >/dev/null
+wp post meta update "$REVIEWS_ID" _wp_page_template "templates/reviews.php" >/dev/null
+wp post meta update "$CONTACTS_ID" _wp_page_template "templates/contacts.php" >/dev/null
+
 wp option update show_on_front page >/dev/null
 wp option update page_on_front "$HOME_ID" >/dev/null
 wp option update page_for_posts "$BLOG_ID" >/dev/null

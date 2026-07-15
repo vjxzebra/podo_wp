@@ -1,0 +1,15 @@
+{
+    "key": "group_podo_service_cpt",
+    "title": "Дані послуги",
+    "fields": [
+        { "key": "field_podo_svc_number", "label": "Номер (01, 02…)", "name": "service_number", "type": "text", "maxlength": 4 },
+        { "key": "field_podo_svc_short", "label": "Короткий опис (картка)", "name": "service_short", "type": "textarea", "rows": 3, "required": 1 },
+        { "key": "field_podo_svc_price", "label": "Ціна (наприклад: від 500 ₴)", "name": "service_price", "type": "text", "required": 1 }
+    ],
+    "location": [
+        [ { "param": "post_type", "operator": "==", "value": "service" } ]
+    ],
+    "position": "normal",
+    "active": true,
+    "show_in_rest": 0
+}

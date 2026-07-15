@@ -1,0 +1,29 @@
+{
+    "key": "group_podo_prices",
+    "title": "Сторінка «Ціни»",
+    "fields": [
+        { "key": "field_podo_prices_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "text", "default_value": "Ціни на послуги" },
+        { "key": "field_podo_prices_hero_subtitle", "label": "Підзаголовок", "name": "hero_subtitle", "type": "textarea", "rows": 3, "default_value": "Прозорі ціни без прихованих доплат. Остаточна вартість залежить від складності — її озвучують до початку процедури." },
+        { "key": "field_podo_prices_groups", "label": "Групи прайсу", "name": "price_groups", "type": "repeater", "layout": "block", "button_label": "Додати групу", "sub_fields": [
+            { "key": "field_podo_prices_group_title", "label": "Назва групи", "name": "group_title", "type": "text" },
+            { "key": "field_podo_prices_rows", "label": "Позиції", "name": "rows", "type": "repeater", "layout": "table", "button_label": "Додати позицію", "sub_fields": [
+                { "key": "field_podo_prices_row_name", "label": "Послуга", "name": "name", "type": "text" },
+                { "key": "field_podo_prices_row_price", "label": "Ціна", "name": "price", "type": "text" }
+            ] }
+        ] },
+        { "key": "field_podo_prices_tab_sidebar", "label": "Сайдбар запису", "name": "", "type": "tab" },
+        { "key": "field_podo_prices_sidebar_title", "label": "Заголовок", "name": "sidebar_title", "type": "text", "default_value": "Запис на прийом" },
+        { "key": "field_podo_prices_sidebar_text", "label": "Текст", "name": "sidebar_text", "type": "textarea", "rows": 3, "default_value": "Не знаєте, скільки коштуватиме саме ваш випадок? Запишіться — порахуємо на консультації." },
+        { "key": "field_podo_prices_sidebar_bullets", "label": "Буліти", "name": "sidebar_bullets", "type": "repeater", "layout": "table", "button_label": "Додати пункт", "sub_fields": [
+            { "key": "field_podo_prices_sidebar_bullet", "label": "Текст", "name": "text", "type": "text" }
+        ] },
+        { "key": "field_podo_prices_sidebar_btn", "label": "Кнопка", "name": "sidebar_btn_label", "type": "text", "default_value": "Записатися" }
+    ],
+    "location": [
+        [ { "param": "page_template", "operator": "==", "value": "templates/prices.php" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}

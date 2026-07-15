@@ -1,0 +1,15 @@
+{
+    "key": "group_podo_blog",
+    "title": "Сторінка «Блог»",
+    "fields": [
+        { "key": "field_podo_blog_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "text", "default_value": "Блог про здоров'я стоп" },
+        { "key": "field_podo_blog_hero_subtitle", "label": "Підзаголовок", "name": "hero_subtitle", "type": "textarea", "rows": 3, "default_value": "Корисні статті про догляд, профілактику та лікування — простою мовою, від практикуючого подолога." }
+    ],
+    "location": [
+        [ { "param": "page_type", "operator": "==", "value": "posts_page" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}

@@ -1,0 +1,37 @@
+{
+    "key": "group_podo_options",
+    "title": "Налаштування сайту",
+    "fields": [
+        { "key": "field_podo_opt_tab_brand", "label": "Бренд", "name": "", "type": "tab" },
+        { "key": "field_podo_opt_brand_name", "label": "Назва (шапка/футер)", "name": "brand_name", "type": "text", "default_value": "Катерина Роженко" },
+        { "key": "field_podo_opt_brand_tagline", "label": "Підпис під назвою", "name": "brand_tagline", "type": "text", "default_value": "Подологія · Хмельницький" },
+        { "key": "field_podo_opt_brand_logo", "label": "Логотип", "name": "brand_logo", "type": "image", "return_format": "url", "preview_size": "thumbnail", "instructions": "Якщо не задано — використовується лого з теми." },
+        { "key": "field_podo_opt_header_cta", "label": "Текст кнопки в шапці", "name": "header_cta_label", "type": "text", "default_value": "Записатися" },
+
+        { "key": "field_podo_opt_tab_contacts", "label": "Контакти", "name": "", "type": "tab" },
+        { "key": "field_podo_opt_phone", "label": "Телефон", "name": "contact_phone", "type": "text", "default_value": "+380 67 123 45 67" },
+        { "key": "field_podo_opt_address", "label": "Адреса", "name": "contact_address", "type": "text", "default_value": "Хмельницький, вул. Проскурівська, 00" },
+        { "key": "field_podo_opt_schedule", "label": "Графік роботи", "name": "contact_schedule", "type": "text", "default_value": "Пн–Сб, 9:00–19:00 · Нд — вихідний" },
+
+        { "key": "field_podo_opt_tab_social", "label": "Соцмережі", "name": "", "type": "tab" },
+        { "key": "field_podo_opt_instagram", "label": "Instagram (посилання)", "name": "social_instagram", "type": "url" },
+        { "key": "field_podo_opt_telegram", "label": "Telegram (посилання)", "name": "social_telegram", "type": "url" },
+        { "key": "field_podo_opt_viber", "label": "Viber (посилання)", "name": "social_viber", "type": "url" },
+
+        { "key": "field_podo_opt_tab_map", "label": "Карта", "name": "", "type": "tab" },
+        { "key": "field_podo_opt_map_embed", "label": "Код вставки Google Maps (iframe)", "name": "map_embed", "type": "textarea", "rows": 5, "instructions": "Google Maps → Поділитися → Вбудувати карту → скопіюйте весь код iframe і вставте сюди. Дозволяються лише карти з google.com/maps/embed." },
+
+        { "key": "field_podo_opt_tab_booking", "label": "Заявки", "name": "", "type": "tab" },
+        { "key": "field_podo_opt_booking_email", "label": "Email для сповіщень про заявки", "name": "booking_email", "type": "email", "instructions": "Якщо порожньо — використовується email адміністратора сайту." },
+
+        { "key": "field_podo_opt_tab_footer", "label": "Футер", "name": "", "type": "tab" },
+        { "key": "field_podo_opt_footer_about", "label": "Опис у футері", "name": "footer_about", "type": "textarea", "rows": 3, "default_value": "Медичний догляд за стопами й нігтями у Хмельницькому. Стерильно, безпечно, без болю." },
+        { "key": "field_podo_opt_footer_copyright", "label": "Копірайт", "name": "footer_copyright", "type": "text", "instructions": "Якщо порожньо — генерується автоматично з поточним роком." }
+    ],
+    "location": [
+        [ { "param": "options_page", "operator": "==", "value": "podo-settings" } ]
+    ],
+    "position": "normal",
+    "active": true,
+    "show_in_rest": 0
+}

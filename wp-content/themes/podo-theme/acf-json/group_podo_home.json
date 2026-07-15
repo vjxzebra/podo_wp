@@ -1,0 +1,59 @@
+{
+    "key": "group_podo_home",
+    "title": "Головна сторінка",
+    "fields": [
+        { "key": "field_podo_home_tab_hero", "label": "Hero", "name": "", "type": "tab" },
+        { "key": "field_podo_home_hero_chip", "label": "Текст чіпа", "name": "hero_chip", "type": "text", "default_value": "Медична подологія за європейськими протоколами" },
+        { "key": "field_podo_home_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "textarea", "rows": 2, "default_value": "Здорові стопи\nбез болю та хірургії", "instructions": "Перенос рядка зберігається." },
+        { "key": "field_podo_home_hero_subtitle", "label": "Підзаголовок", "name": "hero_subtitle", "type": "textarea", "rows": 3, "default_value": "Кабінет подолога Катерини Роженко у Хмельницькому. Діагностика, лікування та догляд за стопами й нігтями — стерильно, безпечно, з турботою." },
+        { "key": "field_podo_home_hero_btn1", "label": "Кнопка основна", "name": "hero_btn_primary", "type": "text", "default_value": "Записатися на прийом" },
+        { "key": "field_podo_home_hero_btn2", "label": "Кнопка другорядна", "name": "hero_btn_secondary", "type": "text", "default_value": "Усі послуги" },
+        { "key": "field_podo_home_hero_bullets", "label": "Переваги (буліти)", "name": "hero_bullets", "type": "repeater", "layout": "table", "button_label": "Додати пункт", "sub_fields": [
+            { "key": "field_podo_home_hero_bullet_text", "label": "Текст", "name": "text", "type": "text" }
+        ] },
+        { "key": "field_podo_home_hero_image", "label": "Фото hero (вертикальне 4:5)", "name": "hero_image", "type": "image", "return_format": "url", "preview_size": "medium" },
+        { "key": "field_podo_home_rating_value", "label": "Рейтинг (картка)", "name": "rating_value", "type": "text", "default_value": "4.9 / 5" },
+        { "key": "field_podo_home_rating_count", "label": "Кількість відгуків (картка)", "name": "rating_count", "type": "text", "default_value": "240+ відгуків" },
+
+        { "key": "field_podo_home_tab_services", "label": "Послуги", "name": "", "type": "tab" },
+        { "key": "field_podo_home_services_eyebrow", "label": "Надзаголовок", "name": "services_eyebrow", "type": "text", "default_value": "Послуги" },
+        { "key": "field_podo_home_services_title", "label": "Заголовок секції", "name": "services_title", "type": "text", "default_value": "Напрямки допомоги" },
+        { "key": "field_podo_home_services_link", "label": "Текст посилання", "name": "services_link_label", "type": "text", "default_value": "Дивитись усі →" },
+
+        { "key": "field_podo_home_tab_about", "label": "Про кабінет", "name": "", "type": "tab" },
+        { "key": "field_podo_home_about_eyebrow", "label": "Надзаголовок", "name": "about_eyebrow", "type": "text", "default_value": "Про кабінет" },
+        { "key": "field_podo_home_about_title", "label": "Заголовок", "name": "about_title", "type": "text", "default_value": "Лікар-подолог із медичним підходом" },
+        { "key": "field_podo_home_about_text", "label": "Текст", "name": "about_text", "type": "textarea", "rows": 4, "default_value": "Понад 7 років допомагаю пацієнтам Хмельницького повертати стопам здоров'я. Працюю за європейськими методиками та використовую лише стерильний інструмент. Кожна процедура — це діагноз, план і контроль результату." },
+        { "key": "field_podo_home_about_link", "label": "Текст посилання", "name": "about_link_label", "type": "text", "default_value": "Детальніше про мене →" },
+        { "key": "field_podo_home_about_image", "label": "Фото (квадратне 1:1)", "name": "about_image", "type": "image", "return_format": "url", "preview_size": "medium" },
+
+        { "key": "field_podo_home_tab_why", "label": "Чому обирають", "name": "", "type": "tab" },
+        { "key": "field_podo_home_why_title", "label": "Заголовок секції", "name": "why_title", "type": "text", "default_value": "Чому обирають цей кабінет" },
+        { "key": "field_podo_home_why_items", "label": "Переваги", "name": "why_items", "type": "repeater", "layout": "block", "button_label": "Додати перевагу", "sub_fields": [
+            { "key": "field_podo_home_why_icon", "label": "Символ/іконка", "name": "icon", "type": "text", "maxlength": 4 },
+            { "key": "field_podo_home_why_item_title", "label": "Заголовок", "name": "title", "type": "text" },
+            { "key": "field_podo_home_why_item_text", "label": "Текст", "name": "text", "type": "textarea", "rows": 2 }
+        ] },
+
+        { "key": "field_podo_home_tab_reviews", "label": "Відгуки", "name": "", "type": "tab" },
+        { "key": "field_podo_home_reviews_title", "label": "Заголовок секції", "name": "reviews_title", "type": "text", "default_value": "Що кажуть пацієнти" },
+        { "key": "field_podo_home_reviews_link", "label": "Текст посилання", "name": "reviews_link_label", "type": "text", "default_value": "Усі відгуки →" },
+
+        { "key": "field_podo_home_tab_blog", "label": "Блог", "name": "", "type": "tab" },
+        { "key": "field_podo_home_blog_eyebrow", "label": "Надзаголовок", "name": "blog_eyebrow", "type": "text", "default_value": "Блог" },
+        { "key": "field_podo_home_blog_title", "label": "Заголовок секції", "name": "blog_title", "type": "text", "default_value": "Корисне про здоров'я стоп" },
+        { "key": "field_podo_home_blog_link", "label": "Текст посилання", "name": "blog_link_label", "type": "text", "default_value": "До блогу →" },
+
+        { "key": "field_podo_home_tab_cta", "label": "CTA", "name": "", "type": "tab" },
+        { "key": "field_podo_home_cta_title", "label": "Заголовок", "name": "cta_title", "type": "text", "default_value": "Готові подбати про свої стопи?" },
+        { "key": "field_podo_home_cta_text", "label": "Текст", "name": "cta_text", "type": "textarea", "rows": 2, "default_value": "Запишіться на консультацію — підберемо зручний час і складемо план догляду саме для вас." },
+        { "key": "field_podo_home_cta_btn", "label": "Кнопка", "name": "cta_btn_label", "type": "text", "default_value": "Записатися →" }
+    ],
+    "location": [
+        [ { "param": "page_type", "operator": "==", "value": "front_page" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}

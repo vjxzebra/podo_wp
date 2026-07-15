@@ -1,0 +1,20 @@
+{
+    "key": "group_podo_contacts",
+    "title": "Сторінка «Контакти»",
+    "fields": [
+        { "key": "field_podo_contacts_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "text", "default_value": "Контакти та запис" },
+        { "key": "field_podo_contacts_hero_subtitle", "label": "Підзаголовок", "name": "hero_subtitle", "type": "textarea", "rows": 3, "default_value": "Залиште заявку або зателефонуйте — підберемо зручний час. Приймаємо за попереднім записом." },
+        { "key": "field_podo_contacts_form_title", "label": "Форма: заголовок", "name": "form_title", "type": "text", "default_value": "Запис на прийом" },
+        { "key": "field_podo_contacts_form_text", "label": "Форма: текст", "name": "form_text", "type": "textarea", "rows": 2, "default_value": "Заповніть форму — Катерина або адміністратор передзвонять для підтвердження." },
+        { "key": "field_podo_contacts_form_consent", "label": "Форма: текст згоди", "name": "form_consent_text", "type": "text", "default_value": "Натискаючи, ви погоджуєтесь на обробку персональних даних" },
+        { "key": "field_podo_contacts_success_title", "label": "Успіх: заголовок", "name": "form_success_title", "type": "text", "default_value": "Заявку надіслано!" },
+        { "key": "field_podo_contacts_success_text", "label": "Успіх: текст", "name": "form_success_text", "type": "textarea", "rows": 2, "default_value": "Дякуємо за звернення. Ми зателефонуємо найближчим часом, щоб підтвердити запис." }
+    ],
+    "location": [
+        [ { "param": "page_template", "operator": "==", "value": "templates/contacts.php" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}

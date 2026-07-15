@@ -1,0 +1,46 @@
+{
+    "key": "group_podo_about",
+    "title": "Сторінка «Про кабінет»",
+    "fields": [
+        { "key": "field_podo_about_tab_hero", "label": "Hero", "name": "", "type": "tab" },
+        { "key": "field_podo_about_hero_title", "label": "Заголовок H1", "name": "hero_title", "type": "textarea", "rows": 2, "default_value": "Кабінет подолога\nКатерини Роженко" },
+        { "key": "field_podo_about_hero_text", "label": "Текст", "name": "hero_text", "type": "textarea", "rows": 4, "default_value": "Затишний приватний кабінет у Хмельницькому, де подологія — це медицина, а не просто педикюр. Тут кожного пацієнта чекає діагностика, чесний план лікування та турбота на кожному етапі." },
+        { "key": "field_podo_about_btn1", "label": "Кнопка основна", "name": "btn_primary_label", "type": "text", "default_value": "Записатися" },
+        { "key": "field_podo_about_btn2", "label": "Кнопка другорядна", "name": "btn_secondary_label", "type": "text", "default_value": "Послуги" },
+        { "key": "field_podo_about_hero_image", "label": "Фото (вертикальне 4:5)", "name": "hero_image", "type": "image", "return_format": "url", "preview_size": "medium" },
+
+        { "key": "field_podo_about_tab_stats", "label": "Статистика", "name": "", "type": "tab" },
+        { "key": "field_podo_about_stats", "label": "Показники", "name": "stats", "type": "repeater", "layout": "table", "button_label": "Додати показник", "sub_fields": [
+            { "key": "field_podo_about_stat_value", "label": "Число", "name": "value", "type": "text" },
+            { "key": "field_podo_about_stat_label", "label": "Підпис", "name": "label", "type": "text" }
+        ] },
+
+        { "key": "field_podo_about_tab_principles", "label": "Принципи", "name": "", "type": "tab" },
+        { "key": "field_podo_about_principles_title", "label": "Заголовок секції", "name": "principles_title", "type": "text", "default_value": "Принципи роботи" },
+        { "key": "field_podo_about_principles_text", "label": "Підзаголовок секції", "name": "principles_text", "type": "textarea", "rows": 2, "default_value": "Те, на чому будується довіра пацієнтів і результат кожної процедури." },
+        { "key": "field_podo_about_principles", "label": "Принципи", "name": "principles", "type": "repeater", "layout": "block", "button_label": "Додати принцип", "sub_fields": [
+            { "key": "field_podo_about_principle_title", "label": "Заголовок", "name": "title", "type": "text" },
+            { "key": "field_podo_about_principle_text", "label": "Текст", "name": "text", "type": "textarea", "rows": 2 }
+        ] },
+
+        { "key": "field_podo_about_tab_team", "label": "Команда", "name": "", "type": "tab" },
+        { "key": "field_podo_about_team_title", "label": "Заголовок секції", "name": "team_title", "type": "text", "default_value": "Хто вас зустріне" },
+        { "key": "field_podo_about_team", "label": "Команда", "name": "team", "type": "repeater", "layout": "block", "button_label": "Додати людину", "sub_fields": [
+            { "key": "field_podo_about_member_photo", "label": "Фото", "name": "photo", "type": "image", "return_format": "url", "preview_size": "thumbnail" },
+            { "key": "field_podo_about_member_name", "label": "Ім'я", "name": "name", "type": "text" },
+            { "key": "field_podo_about_member_role", "label": "Посада", "name": "role", "type": "text" },
+            { "key": "field_podo_about_member_text", "label": "Опис", "name": "text", "type": "textarea", "rows": 3 }
+        ] },
+
+        { "key": "field_podo_about_tab_gallery", "label": "Галерея", "name": "", "type": "tab" },
+        { "key": "field_podo_about_gallery_title", "label": "Заголовок секції", "name": "gallery_title", "type": "text", "default_value": "Кабінет зсередини" },
+        { "key": "field_podo_about_gallery", "label": "Фото кабінету", "name": "gallery", "type": "gallery", "return_format": "url", "preview_size": "medium" }
+    ],
+    "location": [
+        [ { "param": "page_template", "operator": "==", "value": "templates/about.php" } ]
+    ],
+    "position": "normal",
+    "hide_on_screen": [ "the_content" ],
+    "active": true,
+    "show_in_rest": 0
+}
