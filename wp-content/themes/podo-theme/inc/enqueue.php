@@ -23,6 +23,25 @@ add_action('wp_enqueue_scripts', function () {
         (string) filemtime($dir . '/assets/js/main.js'),
         ['in_footer' => true]
     );
+
+    // Форма заявки — лише на сторінці контактів
+    if (is_page_template('templates/contacts.php')) {
+        wp_enqueue_script(
+            'podo-booking',
+            $uri . '/assets/js/booking.js',
+            [],
+            (string) filemtime($dir . '/assets/js/booking.js'),
+            ['in_footer' => true]
+        );
+        wp_localize_script('podo-booking', 'podoBooking', [
+            'endpoint' => esc_url_raw(rest_url('podo/v1/booking')),
+            'nonce'    => wp_create_nonce('podo_booking'),
+            'i18n'     => [
+                'required' => __("Заповніть, будь ласка, ім'я та телефон.", 'podo'),
+                'error'    => __('Щось пішло не так. Спробуйте ще раз або зателефонуйте.', 'podo'),
+            ],
+        ]);
+    }
 });
 
 // Прибираємо зайве зі стандартного head
