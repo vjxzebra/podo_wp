@@ -61,7 +61,7 @@ $podo_socials = [
         <ul>
           <?php foreach ($podo_socials as $podo_label => $podo_url) : ?>
             <?php if ($podo_url) : ?>
-              <li><a href="<?php echo esc_url($podo_url); ?>" target="_blank" rel="noopener"><?php echo esc_html($podo_label); ?></a></li>
+              <li><a href="<?php echo esc_url($podo_url, ['http', 'https', 'viber']); ?>" target="_blank" rel="noopener"><?php echo esc_html($podo_label); ?></a></li>
             <?php else : ?>
               <li><span><?php echo esc_html($podo_label); ?></span></li>
             <?php endif; ?>

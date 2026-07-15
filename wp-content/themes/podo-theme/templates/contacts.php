@@ -51,7 +51,7 @@ $podo_ig       = podo_opt('social_instagram');
 
     <div class="messengers">
       <?php if ($podo_tg) : ?><a class="messenger messenger--tg" href="<?php echo esc_url($podo_tg); ?>" target="_blank" rel="noopener">Telegram</a><?php endif; ?>
-      <?php if ($podo_viber) : ?><a class="messenger messenger--viber" href="<?php echo esc_url($podo_viber); ?>" target="_blank" rel="noopener">Viber</a><?php endif; ?>
+      <?php if ($podo_viber) : ?><a class="messenger messenger--viber" href="<?php echo esc_url($podo_viber, ['http', 'https', 'viber']); ?>" target="_blank" rel="noopener">Viber</a><?php endif; ?>
       <?php if ($podo_ig) : ?><a class="messenger messenger--ig" href="<?php echo esc_url($podo_ig); ?>" target="_blank" rel="noopener">Instagram</a><?php endif; ?>
     </div>
 

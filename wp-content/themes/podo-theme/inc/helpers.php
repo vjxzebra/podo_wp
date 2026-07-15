@@ -51,8 +51,9 @@ function podo_page_url(string $slug): string {
  * Приблизний час читання статті («5 хв»).
  */
 function podo_read_time(int $post_id): string {
-    $words = str_word_count(wp_strip_all_tags((string) get_post_field('post_content', $post_id)));
-    $mins  = max(1, (int) ceil($words / 200));
+    $text  = wp_strip_all_tags((string) get_post_field('post_content', $post_id));
+    $words = preg_match_all('/[\p{L}\p{N}]+/u', $text);
+    $mins  = max(1, (int) ceil((int) $words / 200));
     /* translators: %d — хвилини читання */
     return sprintf(__('%d хв', 'podo'), $mins);
 }
