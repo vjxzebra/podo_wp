@@ -36,7 +36,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8080:80"
+      - "${WP_PORT:-8090}:80"
     environment:
       <<: *wp-environment
     volumes:
@@ -68,7 +68,7 @@ services:
     image: mailhog/mailhog:v1.0.1
     restart: unless-stopped
     ports:
-      - "8025:8025"
+      - "${MAILHOG_PORT:-8125}:8025"
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -77,7 +77,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8081:80"
+      - "${PMA_PORT:-8181}:80"
     environment:
       PMA_HOST: db
       PMA_USER: ${DB_USER}

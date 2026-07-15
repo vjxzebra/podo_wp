@@ -1,0 +1,13 @@
+/*
+Theme Name: Podo Theme
+Theme URI: https://rozhenko-podolog.com.ua
+Author: Podo Dev
+Description: Кастомна тема подологічного кабінету Катерини Роженко (Хмельницький). Верстка за макетом design/Багатосторінковий сайт.dc.html.
+Version: 0.1.0
+Requires at least: 6.4
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+Text Domain: podo
+*/
+
+/* Стилі підключаються з assets/css/main.css (див. inc/enqueue.php) */

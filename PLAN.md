@@ -127,13 +127,18 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080   # 200
 
 ### Фаза 1 — Скелет теми та дизайн-система
 
-- [ ] Тема `podo-theme`: `style.css` (шапка), `functions.php` + `inc/setup.php` (theme supports: title-tag, post-thumbnails, menus, html5), `inc/enqueue.php`.
-- [ ] Дизайн-токени в `assets/css/main.css` як CSS custom properties — **точно з макета**: `--accent:#1C8C63; --leaf:#6DB33E; --ink:#12352A; --band: linear-gradient(160deg,#12352A,#0B3D2E)`, фони `#F4F9F6/#FBFDFC`, радіуси 18/24px, кнопки-пігулки (radius 999px).
-- [ ] Шрифт Onest (400–800) woff2 self-hosted у `assets/fonts/` + `@font-face`.
-- [ ] `header.php`: шапка з лого (`design/assets/logo.png` → `assets/img/`), меню (wp_nav_menu, локація `primary`), телефон і кнопка «Записатися» з опцій, активний пункт з підкресленням; бургер + мобільне меню (JS).
-- [ ] `footer.php`: 4 колонки як у макеті, дані з опцій.
-- [ ] `template-parts/cta-band.php` — темно-зелена CTA-банда (параметризована).
-- [ ] Адаптив: брейкпоінт 760px, сітки → 1 колонка, як у контейнер-квері макета.
+- [x] Тема `podo-theme`: `style.css` (шапка), `functions.php` + `inc/setup.php` (theme supports: title-tag, post-thumbnails, menus, html5), `inc/enqueue.php`.
+- [x] Дизайн-токени в `assets/css/main.css` як CSS custom properties — **точно з макета**: `--accent:#1C8C63; --leaf:#6DB33E; --ink:#12352A; --band: linear-gradient(160deg,#12352A,#0B3D2E)`, фони `#F4F9F6/#FBFDFC`, радіуси 18/24px, кнопки-пігулки (radius 999px).
+- [x] Шрифт Onest (400–800) woff2 self-hosted у `assets/fonts/` + `@font-face`.
+- [x] `header.php`: шапка з лого (`design/assets/logo.png` → `assets/img/`), меню (wp_nav_menu, локація `primary`), телефон і кнопка «Записатися» з опцій, активний пункт з підкресленням; бургер + мобільне меню (JS).
+- [x] `footer.php`: 4 колонки як у макеті, дані з опцій.
+- [x] `template-parts/cta-band.php` — темно-зелена CTA-банда (параметризована).
+- [x] Адаптив: брейкпоінт 760px, сітки → 1 колонка, як у контейнер-квері макета.
+
+> Примітка (Windows-машина розробника): порти 8080/8025/8081 перехоплює wslrelay, тому dev-порти
+> параметризовані в `.env`: сайт **:8090**, MailHog **:8125**, phpMyAdmin **:8181**.
+> Зовнішній Chrome (Claude in Chrome) фіксує емуляцію viewport ~1990px — мобільний адаптив
+> верифікується у вбудованому браузері (viewport 375px), desktop — у зовнішньому Chrome.
 
 **DoD:** тема активована (`wp theme activate podo-theme`), на будь-якій сторінці видно шапку/футер, що піксельно відповідають макету на 1200px і 400px. Верифікація — скріншоти в зовнішньому Chrome проти макета.
 

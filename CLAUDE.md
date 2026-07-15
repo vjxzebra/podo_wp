@@ -20,10 +20,12 @@ docker compose logs wordpress --tail 50               # логи PHP
 
 | Що | URL |
 |---|---|
-| Сайт | http://localhost:8080 |
-| Адмінка | http://localhost:8080/wp-admin (креденшели в `.env`) |
-| MailHog (пошта) | http://localhost:8025 |
-| phpMyAdmin | http://localhost:8081 |
+| Сайт | http://localhost:8090 |
+| Адмінка | http://localhost:8090/wp-admin (креденшели в `.env`) |
+| MailHog (пошта) | http://localhost:8125 |
+| phpMyAdmin | http://localhost:8181 |
+
+**Увага:** порти 8080/8025/8081 на цій машині зайняті wslrelay (інший проєкт у WSL) — тому нестандартні. Порти параметризовані в `.env` (`WP_PORT`, `MAILHOG_PORT`, `PMA_PORT`).
 
 ## Структура
 
