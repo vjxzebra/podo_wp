@@ -53,7 +53,7 @@ $podo_posts    = get_posts(['post_type' => 'post', 'numberposts' => 3]);
         <div class="ph ph--45"><span><?php esc_html_e('фото: кабінет / процедура', 'podo'); ?></span></div>
       <?php endif; ?>
       <div class="rating-card">
-        <span class="stars">★★★★★</span>
+        <span class="stars" aria-hidden="true">★★★★★</span>
         <div>
           <div class="rating-value"><?php echo esc_html(podo_field('rating_value', '4.9 / 5')); ?></div>
           <div class="rating-count"><?php echo esc_html(podo_field('rating_count', '240+ відгуків')); ?></div>
@@ -107,8 +107,8 @@ $podo_posts    = get_posts(['post_type' => 'post', 'numberposts' => 3]);
     <div class="grid-4">
       <?php foreach ($podo_why_items as $podo_item) : ?>
         <div class="why-item">
-          <div class="why-icon"><?php echo esc_html($podo_item['icon'] ?? '✓'); ?></div>
-          <h4><?php echo esc_html($podo_item['title'] ?? ''); ?></h4>
+          <div class="why-icon" aria-hidden="true"><?php echo esc_html($podo_item['icon'] ?? '✓'); ?></div>
+          <h3><?php echo esc_html($podo_item['title'] ?? ''); ?></h3>
           <p><?php echo esc_html($podo_item['text'] ?? ''); ?></p>
         </div>
       <?php endforeach; ?>

@@ -20,3 +20,12 @@ add_action('after_setup_theme', function () {
     add_image_size('podo-card', 720, 450, true);   // картки статей 16/10
     add_image_size('podo-portrait', 640, 800, true); // портрети 4/5
 });
+
+// Безпека: XML-RPC не використовується — блокуємо ендпоінт повністю
+add_filter('xmlrpc_enabled', '__return_false');
+add_action('init', function () {
+    if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+        http_response_code(403);
+        exit;
+    }
+});

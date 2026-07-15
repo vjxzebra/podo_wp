@@ -19,13 +19,13 @@ $podo_initial = mb_substr(trim($podo_name), 0, 1);
 <div class="card review-card">
   <?php if ($podo_variant === 'full') : ?>
     <div class="review-card-head">
-      <span class="stars"><?php echo esc_html(str_repeat('★', $podo_rating)); ?></span>
+      <span class="stars" aria-hidden="true"><?php echo esc_html(str_repeat('★', $podo_rating)); ?></span>
       <?php if ($podo_service) : ?>
         <span class="badge"><?php echo esc_html($podo_service); ?></span>
       <?php endif; ?>
     </div>
   <?php else : ?>
-    <span class="stars"><?php echo esc_html(str_repeat('★', $podo_rating)); ?></span>
+    <span class="stars" aria-hidden="true"><?php echo esc_html(str_repeat('★', $podo_rating)); ?></span>
   <?php endif; ?>
   <p><?php echo esc_html($podo_text); ?></p>
   <div class="review-author">

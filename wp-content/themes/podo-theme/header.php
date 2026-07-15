@@ -71,3 +71,5 @@ $podo_book_url  = podo_page_url('kontakty') . '#zapys';
     </div>
   </div>
 </div>
+
+<main class="site-main">

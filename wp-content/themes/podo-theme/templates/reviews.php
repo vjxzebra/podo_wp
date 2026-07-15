@@ -29,7 +29,7 @@ $podo_reviews = get_posts(['post_type' => 'review', 'numberposts' => -1, 'orderb
     <div class="reviews-summary">
       <div class="summary-card">
         <div class="summary-value"><?php echo esc_html(podo_field('summary_rating', '4.9')); ?></div>
-        <span class="stars">★★★★★</span>
+        <span class="stars" aria-hidden="true">★★★★★</span>
         <div class="summary-label"><?php echo esc_html(podo_field('summary_count_label', 'на основі 240+ відгуків')); ?></div>
       </div>
       <div class="distribution">

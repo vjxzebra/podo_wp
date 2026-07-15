@@ -22,14 +22,16 @@
 
 /* ---- Токени ---- */
 :root {
-  --accent: #1C8C63;
+  /* #1A825C — трохи темніший за макетний #1C8C63 заради контрасту 4.5:1 (WCAG AA) */
+  --accent: #1A825C;
   --accent-dark: #166B4E;
   --leaf: #6DB33E;
+  --leaf-ink: #4A7F1C; /* leaf для ТЕКСТУ на білому (контраст) */
   --ink: #12352A;
   --muted: #4C5C53;
   --muted-2: #5E6E66;
-  --muted-3: #6E8377;
-  --faint: #8A9A90;
+  --muted-3: #5F7367;
+  --faint: #66776C;
   --border: #E7EEE9;
   --border-2: #EEF3F0;
   --ghost-border: #D8E4DD;
@@ -87,11 +89,11 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
   font-size: 13px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-dark);
   font-weight: 700;
 }
 
-.breadcrumbs { font-size: 13px; color: var(--accent); font-weight: 600; }
+.breadcrumbs { font-size: 13px; color: var(--accent-dark); font-weight: 600; }
 
 .btn {
   display: inline-block;
@@ -141,7 +143,7 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
   padding: 26px;
 }
 
-.arrow-link { font-size: 15px; font-weight: 600; color: var(--accent); cursor: pointer; white-space: nowrap; }
+.arrow-link { font-size: 15px; font-weight: 600; color: var(--accent-dark); cursor: pointer; white-space: nowrap; }
 
 .stars { color: var(--leaf); font-size: 16px; letter-spacing: 1px; }
 
@@ -168,7 +170,7 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
 .ph > span {
   font-family: monospace;
   font-size: 13px;
-  color: #7C8E84;
+  color: #61756A;
   background: #fff;
   padding: 8px 14px;
   border-radius: 8px;
@@ -222,7 +224,7 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
   font-size: 11px;
   letter-spacing: .15em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-dark);
   font-weight: 600;
 }
 
@@ -328,10 +330,10 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
 
 /* ---- Картка послуги ---- */
 .service-card { display: flex; flex-direction: column; padding: 26px; }
-.service-num { font-family: monospace; font-size: 14px; font-weight: 700; color: var(--leaf); }
+.service-num { font-family: monospace; font-size: 14px; font-weight: 700; color: var(--leaf-ink); }
 .service-card h3 { margin: 14px 0 8px; }
 .service-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--muted-2); flex: 1; }
-.service-price { font-size: 14px; font-weight: 700; color: var(--accent); }
+.service-price { font-size: 14px; font-weight: 700; color: var(--accent-dark); }
 .service-card-foot {
   display: flex;
   align-items: center;
@@ -542,7 +544,7 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
   font-weight: 800;
   margin-bottom: 16px;
 }
-.principle-card h4 { margin: 0 0 8px; font-size: 18px; }
+.principle-card h3 { margin: 0 0 8px; font-size: 18px; }
 .principle-card p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted-2); }
 
 .why-icon {
@@ -557,7 +559,7 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
   font-weight: 800;
   margin-bottom: 16px;
 }
-.why-item h4 { margin: 0 0 8px; }
+.why-item h3 { margin: 0 0 8px; font-size: 17px; }
 .why-item p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted-2); }
 
 .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 760px; }
@@ -573,8 +575,8 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
 .team-photo.ph { border: none; border-radius: 0; }
 .team-photo.ph > span { transform: rotate(-90deg); font-size: 11px; padding: 4px 8px; }
 .team-body { padding: 24px; }
-.team-body h4 { margin: 0 0 4px; font-size: 19px; }
-.team-role { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 12px; }
+.team-body h3 { margin: 0 0 4px; font-size: 19px; }
+.team-role { font-size: 13px; color: var(--accent-dark); font-weight: 600; margin-bottom: 12px; }
 .team-body p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted-2); }
 
 .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }

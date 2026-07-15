@@ -66,8 +66,8 @@ $podo_gallery_ph = ['фото кабінету', 'обладнання', 'сте
     <div class="grid-3">
       <?php foreach ($podo_principles as $podo_i => $podo_principle) : ?>
         <div class="principle-card">
-          <div class="principle-num"><?php echo esc_html((string) ($podo_i + 1)); ?></div>
-          <h4><?php echo esc_html($podo_principle['title'] ?? ''); ?></h4>
+          <div class="principle-num" aria-hidden="true"><?php echo esc_html((string) ($podo_i + 1)); ?></div>
+          <h3><?php echo esc_html($podo_principle['title'] ?? ''); ?></h3>
           <p><?php echo esc_html($podo_principle['text'] ?? ''); ?></p>
         </div>
       <?php endforeach; ?>
@@ -87,7 +87,7 @@ $podo_gallery_ph = ['фото кабінету', 'обладнання', 'сте
             <div class="team-photo ph"><span><?php esc_html_e('фото', 'podo'); ?></span></div>
           <?php endif; ?>
           <div class="team-body">
-            <h4><?php echo esc_html($podo_member['name'] ?? ''); ?></h4>
+            <h3><?php echo esc_html($podo_member['name'] ?? ''); ?></h3>
             <div class="team-role"><?php echo esc_html($podo_member['role'] ?? ''); ?></div>
             <p><?php echo esc_html($podo_member['text'] ?? ''); ?></p>
           </div>

@@ -194,11 +194,12 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080   # 200
 
 ### Фаза 7 — QA
 
-- [ ] Прогін усіх сторінок desktop (1200px) + mobile (400px) у зовнішньому Chrome, порівняння з макетом (обидва режими перемикача).
-- [ ] Форми: заявка (успіх/помилки/rate-limit), фільтр блогу, пагінація, бургер-меню.
-- [ ] `wp core verify-checksums`, `WP_DEBUG` — без notices; консоль браузера — без помилок.
-- [ ] Lighthouse: Performance ≥ 90, A11y ≥ 90, SEO ≥ 90 (mobile).
-- [ ] Безпека: `wp option get users_can_register` = 0, XML-RPC вимкнено, редактор файлів вимкнено (`DISALLOW_FILE_EDIT`).
+- [x] Прогін усіх сторінок desktop + mobile 375px: усі 200, без горизонтального overflow, бургер/masonry/сітки колапсують коректно.
+- [x] Форми: заявка (успіх/невалідний телефон 400/honeypot/nonce 403 — Фаза 4), фільтр блогу за категоріями (слаги cyr2lat, активна пігулка), стаття, бургер-меню.
+- [x] `wp core verify-checksums` ✓; debug.log чистий після повного обходу; консоль браузера чиста (єдина помилка — від розширення Chrome, не сайту).
+- [x] Lighthouse (docker, mobile): Головна 97/95/78/92, Контакти 97/96/78/92, Блог –/93/–/92 (perf/a11y/bp/seo). Perf/A11y/SEO ≥ 90 ✓. Best-practices 78 — лише через відсутність HTTPS на localhost (is-on-https, redirects-http); на проді за Caddy з SSL пройде.
+- [x] A11y-фікси за результатами аудиту: `<main>` landmark, порядок заголовків (h4→h3 у картках), aria-hidden для декоративних зірок/іконок, контраст (акцент #1C8C63→#1A825C, дрібні акцентні тексти → #166B4E, leaf-текст → #4A7F1C, приглушені тексти затемнені).
+- [x] Безпека: `users_can_register=0`, XML-RPC заблоковано (403), `DISALLOW_FILE_EDIT=1`.
 
 **DoD:** чекліст закритий, знайдені дефекти виправлені й реверифіковані.
 

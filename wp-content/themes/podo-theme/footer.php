@@ -20,6 +20,8 @@ $podo_socials = [
 ];
 ?>
 
+</main>
+
 <footer class="site-footer">
   <div class="site-footer-inner">
     <div class="footer-grid">
