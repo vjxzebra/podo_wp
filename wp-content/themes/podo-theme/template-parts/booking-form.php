@@ -35,8 +35,11 @@ $podo_services = get_posts(['post_type' => 'service', 'numberposts' => -1, 'orde
         <textarea id="booking-comment" name="comment" rows="3" placeholder="<?php esc_attr_e('Опишіть проблему або зручний час', 'podo'); ?>"></textarea>
       </div>
       <input type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;">
+      <?php if (podo_recaptcha_enabled()) : ?>
+        <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(podo_opt('recaptcha_site_key')); ?>" data-theme="dark"></div>
+      <?php endif; ?>
       <button type="submit"><?php esc_html_e('Надіслати заявку', 'podo'); ?></button>
-      <p class="form-error" data-booking-error></p>
+      <p class="form-error" data-booking-error role="alert"></p>
       <p class="form-consent"><?php echo esc_html(podo_field('form_consent_text', 'Натискаючи, ви погоджуєтесь на обробку персональних даних')); ?></p>
     </form>
   </div>

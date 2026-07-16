@@ -23,6 +23,8 @@
 
         { "key": "field_podo_opt_tab_booking", "label": "Заявки", "name": "", "type": "tab" },
         { "key": "field_podo_opt_booking_email", "label": "Email для сповіщень про заявки", "name": "booking_email", "type": "email", "instructions": "Якщо порожньо — використовується email адміністратора сайту." },
+        { "key": "field_podo_opt_recaptcha_site", "label": "reCAPTCHA v2: Site key", "name": "recaptcha_site_key", "type": "text", "instructions": "Google reCAPTCHA v2 («Я не робот»). Створіть ключі на google.com/recaptcha/admin/create. Капча вмикається, лише коли заповнені ОБИДВА ключі." },
+        { "key": "field_podo_opt_recaptcha_secret", "label": "reCAPTCHA v2: Secret key", "name": "recaptcha_secret_key", "type": "text", "instructions": "Секретний ключ — перевіряється на сервері, нікому не показуйте." },
 
         { "key": "field_podo_opt_tab_footer", "label": "Футер", "name": "", "type": "tab" },
         { "key": "field_podo_opt_footer_about", "label": "Опис у футері", "name": "footer_about", "type": "textarea", "rows": 3, "default_value": "Медичний догляд за стопами й нігтями у Хмельницькому. Стерильно, безпечно, без болю." },

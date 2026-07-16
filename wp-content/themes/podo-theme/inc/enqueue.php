@@ -33,12 +33,18 @@ add_action('wp_enqueue_scripts', function () {
             (string) filemtime($dir . '/assets/js/booking.js'),
             ['in_footer' => true]
         );
+        if (podo_recaptcha_enabled()) {
+            wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=uk', [], null, ['in_footer' => true]);
+        }
         wp_localize_script('podo-booking', 'podoBooking', [
-            'endpoint' => esc_url_raw(rest_url('podo/v1/booking')),
-            'nonce'    => wp_create_nonce('podo_booking'),
-            'i18n'     => [
-                'required' => __("Заповніть, будь ласка, ім'я та телефон.", 'podo'),
-                'error'    => __('Щось пішло не так. Спробуйте ще раз або зателефонуйте.', 'podo'),
+            'endpoint'  => esc_url_raw(rest_url('podo/v1/booking')),
+            'nonce'     => wp_create_nonce('podo_booking'),
+            'recaptcha' => podo_recaptcha_enabled(),
+            'i18n'      => [
+                'required'    => __("Заповніть, будь ласка, ім'я та телефон.", 'podo'),
+                'captcha'     => __('Підтвердіть, будь ласка, що ви не робот.', 'podo'),
+                'captchaWait' => __('Перевірка «Я не робот» ще завантажується — зачекайте секунду і спробуйте знову.', 'podo'),
+                'error'       => __('Щось пішло не так. Спробуйте ще раз або зателефонуйте.', 'podo'),
             ],
         ]);
     }
@@ -50,4 +56,14 @@ add_action('init', function () {
     remove_action('wp_head', 'wlwmanifest_link');
     remove_action('wp_head', 'rsd_link');
     remove_action('wp_head', 'wp_shortlink_wp_head');
+});
+
+// Сторінку з формою не можна кешувати: в HTML запечені nonce і стан reCAPTCHA
+add_action('template_redirect', function () {
+    if (is_page_template('templates/contacts.php')) {
+        if (!defined('DONOTCACHEPAGE')) {
+            define('DONOTCACHEPAGE', true);
+        }
+        nocache_headers();
+    }
 });

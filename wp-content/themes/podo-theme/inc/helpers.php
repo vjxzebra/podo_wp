@@ -79,6 +79,13 @@ function podo_map_embed(): string {
 }
 
 /**
+ * Чи ввімкнена reCAPTCHA для форми заявки (потрібні обидва ключі).
+ */
+function podo_recaptcha_enabled(): bool {
+    return podo_opt('recaptcha_site_key') !== '' && podo_opt('recaptcha_secret_key') !== '';
+}
+
+/**
  * Repeater-поле з фолбеком (дефолти з макета до наповнення контентом).
  */
 function podo_repeater(string $name, array $default, $post_id = false): array {

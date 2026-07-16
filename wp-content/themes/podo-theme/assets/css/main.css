@@ -651,6 +651,7 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
   resize: vertical;
 }
 .booking-form select option { color: var(--ink); }
+.booking-form .g-recaptcha { margin-top: 2px; }
 .booking-form button[type="submit"] {
   margin-top: 6px;
   background: #fff;
@@ -811,6 +812,9 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
 
   .form-card { padding: 28px 22px; }
 
+  /* Віджет reCAPTCHA (фіксовані 304px) — масштабуємо на вузьких екранах */
+  .booking-form .g-recaptcha { transform-origin: 0 0; }
+
   .footer-grid { grid-template-columns: 1fr; }
 
   .service-group { padding-block: 36px; }
@@ -818,4 +822,13 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
 }
 @media (min-width: 761px) {
   .mobile-menu { display: none !important; }
+}
+@media (max-width: 400px) {
+  .booking-form .g-recaptcha { transform: scale(.88); }
+}
+@media (max-width: 352px) {
+  .booking-form .g-recaptcha { transform: scale(.78); }
+}
+@media (max-width: 322px) {
+  .booking-form .g-recaptcha { transform: scale(.72); }
 }

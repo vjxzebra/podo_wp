@@ -14,12 +14,13 @@ add_action('rest_api_init', function () {
         'callback'            => 'podo_booking_submit',
         'permission_callback' => '__return_true',
         'args'                => [
-            'name'    => ['type' => 'string', 'required' => true],
-            'phone'   => ['type' => 'string', 'required' => true],
-            'service' => ['type' => 'string', 'required' => false],
-            'comment' => ['type' => 'string', 'required' => false],
-            'website' => ['type' => 'string', 'required' => false], // honeypot
-            'nonce'   => ['type' => 'string', 'required' => true],
+            'name'      => ['type' => 'string', 'required' => true],
+            'phone'     => ['type' => 'string', 'required' => true],
+            'service'   => ['type' => 'string', 'required' => false],
+            'comment'   => ['type' => 'string', 'required' => false],
+            'website'   => ['type' => 'string', 'required' => false], // honeypot
+            'nonce'     => ['type' => 'string', 'required' => true],
+            'recaptcha' => ['type' => 'string', 'required' => false],
         ],
     ]);
 });
@@ -43,6 +44,12 @@ function podo_booking_submit(WP_REST_Request $request) {
     $count = (int) get_transient($key);
     if ($count >= PODO_BOOKING_RATE_LIMIT) {
         return new WP_Error('podo_rate', __('Забагато заявок. Спробуйте пізніше або зателефонуйте нам.', 'podo'), ['status' => 429]);
+    }
+
+    // reCAPTCHA (якщо ввімкнена в опціях)
+    $captcha_check = podo_booking_verify_recaptcha((string) $request->get_param('recaptcha'), $ip);
+    if (is_wp_error($captcha_check)) {
+        return $captcha_check;
     }
 
     $name    = sanitize_text_field((string) $request->get_param('name'));
@@ -78,6 +85,45 @@ function podo_booking_submit(WP_REST_Request $request) {
     podo_booking_notify($post_id, $name, $phone, $service, $comment);
 
     return new WP_REST_Response(['success' => true], 200);
+}
+
+/**
+ * Серверна перевірка Google reCAPTCHA v2.
+ * Повертає true, якщо капча вимкнена (немає ключів) або токен валідний; інакше WP_Error.
+ *
+ * @return true|WP_Error
+ */
+function podo_booking_verify_recaptcha(string $token, string $ip) {
+    if (!podo_recaptcha_enabled()) {
+        return true;
+    }
+
+    if ($token === '') {
+        return new WP_Error('podo_captcha', __('Підтвердіть, будь ласка, що ви не робот.', 'podo'), ['status' => 400]);
+    }
+
+    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+        'timeout' => 8,
+        'body'    => [
+            'secret'   => podo_opt('recaptcha_secret_key'),
+            'response' => $token,
+            'remoteip' => $ip,
+        ],
+    ]);
+
+    if (is_wp_error($response)) {
+        error_log('podo recaptcha: siteverify недоступний: ' . $response->get_error_message());
+        return new WP_Error('podo_captcha_http', __('Не вдалося перевірити captcha. Спробуйте ще раз або зателефонуйте нам.', 'podo'), ['status' => 502]);
+    }
+
+    $body = json_decode((string) wp_remote_retrieve_body($response), true);
+    if (empty($body['success'])) {
+        $codes = implode(',', (array) ($body['error-codes'] ?? []));
+        error_log('podo recaptcha: перевірку не пройдено (' . $codes . ')');
+        return new WP_Error('podo_captcha', __('Перевірка «Я не робот» не пройдена. Позначте прапорець ще раз і повторіть.', 'podo'), ['status' => 400]);
+    }
+
+    return true;
 }
 
 /**
