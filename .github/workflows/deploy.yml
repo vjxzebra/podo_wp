@@ -24,6 +24,8 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
           ssh-keyscan -H "${SSH_HOST#*@}" >> ~/.ssh/known_hosts
+          # deploy.sh кличе голий ssh — без config нестандартний id_deploy не підхопиться
+          printf 'Host *\n  IdentityFile ~/.ssh/id_deploy\n  IdentitiesOnly yes\n' >> ~/.ssh/config
 
       - name: Deploy
         env:

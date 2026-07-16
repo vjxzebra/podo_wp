@@ -10,7 +10,7 @@ COMPOSE="docker compose -f docker-compose.yml -f docker-compose.prod.yml"
 echo "==> Rsync коду на $HOST:$DIR"
 rsync -az --delete \
   --exclude '.git' \
-  --exclude '.env' \
+  --exclude '.env*' \
   --exclude 'db-data' \
   --exclude 'design' \
   --exclude 'wp-content/uploads' \

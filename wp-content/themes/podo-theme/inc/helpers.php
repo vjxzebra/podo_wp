@@ -79,10 +79,28 @@ function podo_map_embed(): string {
 }
 
 /**
+ * Ключі reCAPTCHA: константи з .env сервера (PODO_RECAPTCHA_*) мають пріоритет
+ * над опціями адмінки — на проді секрети живуть в оточенні, не в БД.
+ */
+function podo_recaptcha_site_key(): string {
+    if (defined('PODO_RECAPTCHA_SITE_KEY') && PODO_RECAPTCHA_SITE_KEY !== '') {
+        return (string) PODO_RECAPTCHA_SITE_KEY;
+    }
+    return podo_opt('recaptcha_site_key');
+}
+
+function podo_recaptcha_secret_key(): string {
+    if (defined('PODO_RECAPTCHA_SECRET_KEY') && PODO_RECAPTCHA_SECRET_KEY !== '') {
+        return (string) PODO_RECAPTCHA_SECRET_KEY;
+    }
+    return podo_opt('recaptcha_secret_key');
+}
+
+/**
  * Чи ввімкнена reCAPTCHA для форми заявки (потрібні обидва ключі).
  */
 function podo_recaptcha_enabled(): bool {
-    return podo_opt('recaptcha_site_key') !== '' && podo_opt('recaptcha_secret_key') !== '';
+    return podo_recaptcha_site_key() !== '' && podo_recaptcha_secret_key() !== '';
 }
 
 /**

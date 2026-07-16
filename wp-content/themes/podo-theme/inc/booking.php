@@ -112,7 +112,7 @@ function podo_booking_verify_recaptcha(string $token, string $ip) {
     $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
         'timeout' => 8,
         'body'    => [
-            'secret'   => podo_opt('recaptcha_secret_key'),
+            'secret'   => podo_recaptcha_secret_key(),
             'response' => $token,
             'remoteip' => $ip,
         ],

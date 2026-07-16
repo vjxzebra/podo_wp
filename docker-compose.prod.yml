@@ -21,6 +21,8 @@ services:
         define('WPMS_SMTP_USER', '${SMTP_USER}');
         define('WPMS_SMTP_PASS', '${SMTP_PASS}');
         define('WPMS_SMTP_AUTOTLS', true);
+        define('PODO_RECAPTCHA_SITE_KEY', '${RECAPTCHA_SITE_KEY}');
+        define('PODO_RECAPTCHA_SECRET_KEY', '${RECAPTCHA_SECRET_KEY}');
 
   wpcli:
     environment:

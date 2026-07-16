@@ -36,7 +36,7 @@ add_action('wp_enqueue_scripts', function () {
         if (podo_recaptcha_enabled()) {
             wp_enqueue_script(
                 'google-recaptcha',
-                'https://www.google.com/recaptcha/api.js?render=' . rawurlencode(podo_opt('recaptcha_site_key')) . '&hl=uk',
+                'https://www.google.com/recaptcha/api.js?render=' . rawurlencode(podo_recaptcha_site_key()) . '&hl=uk',
                 [],
                 null,
                 ['in_footer' => true]
@@ -49,7 +49,7 @@ add_action('wp_enqueue_scripts', function () {
             // і кастомний nonce (створений для них на сторінці) не проходить перевірку
             'restNonce'    => wp_create_nonce('wp_rest'),
             'recaptcha'    => podo_recaptcha_enabled(),
-            'recaptchaKey' => podo_opt('recaptcha_site_key'),
+            'recaptchaKey' => podo_recaptcha_site_key(),
             'i18n'         => [
                 'required'    => __("Заповніть, будь ласка, ім'я та телефон.", 'podo'),
                 'phone'       => __('Вкажіть повний номер телефону: +380 XX XXX XX XX.', 'podo'),
