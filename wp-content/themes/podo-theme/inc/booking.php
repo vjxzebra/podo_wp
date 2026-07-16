@@ -5,8 +5,10 @@
 
 defined('ABSPATH') || exit;
 
-const PODO_BOOKING_RATE_LIMIT = 5;      // заявок з одного IP
-const PODO_BOOKING_RATE_WINDOW = 3600;  // за годину
+const PODO_BOOKING_RATE_LIMIT = 5;       // заявок з одного IP
+const PODO_BOOKING_RATE_WINDOW = 3600;   // за годину
+const PODO_RECAPTCHA_MIN_SCORE = 0.5;    // поріг reCAPTCHA v3 (0 — бот, 1 — людина)
+const PODO_RECAPTCHA_ACTION = 'booking'; // action, який передає фронтенд у grecaptcha.execute()
 
 add_action('rest_api_init', function () {
     register_rest_route('podo/v1', '/booking', [
@@ -60,8 +62,13 @@ function podo_booking_submit(WP_REST_Request $request) {
     if (mb_strlen($name) < 2 || mb_strlen($name) > 100) {
         return new WP_Error('podo_name', __("Вкажіть, будь ласка, ваше ім'я.", 'podo'), ['status' => 400]);
     }
-    if (!preg_match('/^\+?[\d\s\-()]{9,20}$/', $phone)) {
-        return new WP_Error('podo_phone', __('Вкажіть коректний номер телефону.', 'podo'), ['status' => 400]);
+
+    // Український номер у будь-якому написанні -> нормалізуємо до "+380 XX XXX XX XX"
+    $phone_digits = preg_replace('/\D/', '', $phone);
+    if (preg_match('/^(?:38)?0(\d{9})$/', (string) $phone_digits, $m)) {
+        $phone = '+380 ' . substr($m[1], 0, 2) . ' ' . substr($m[1], 2, 3) . ' ' . substr($m[1], 5, 2) . ' ' . substr($m[1], 7, 2);
+    } else {
+        return new WP_Error('podo_phone', __('Вкажіть коректний український номер: +380 XX XXX XX XX.', 'podo'), ['status' => 400]);
     }
 
     $post_id = wp_insert_post([
@@ -88,7 +95,7 @@ function podo_booking_submit(WP_REST_Request $request) {
 }
 
 /**
- * Серверна перевірка Google reCAPTCHA v2.
+ * Серверна перевірка Google reCAPTCHA v3: success + action + score.
  * Повертає true, якщо капча вимкнена (немає ключів) або токен валідний; інакше WP_Error.
  *
  * @return true|WP_Error
@@ -99,7 +106,7 @@ function podo_booking_verify_recaptcha(string $token, string $ip) {
     }
 
     if ($token === '') {
-        return new WP_Error('podo_captcha', __('Підтвердіть, будь ласка, що ви не робот.', 'podo'), ['status' => 400]);
+        return new WP_Error('podo_captcha', __('Не вдалося підтвердити, що ви не робот. Оновіть сторінку і спробуйте ще раз.', 'podo'), ['status' => 400]);
     }
 
     $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
@@ -113,14 +120,22 @@ function podo_booking_verify_recaptcha(string $token, string $ip) {
 
     if (is_wp_error($response)) {
         error_log('podo recaptcha: siteverify недоступний: ' . $response->get_error_message());
-        return new WP_Error('podo_captcha_http', __('Не вдалося перевірити captcha. Спробуйте ще раз або зателефонуйте нам.', 'podo'), ['status' => 502]);
+        return new WP_Error('podo_captcha_http', __('Не вдалося перевірити захист від спаму. Спробуйте ще раз або зателефонуйте нам.', 'podo'), ['status' => 502]);
     }
 
-    $body = json_decode((string) wp_remote_retrieve_body($response), true);
-    if (empty($body['success'])) {
-        $codes = implode(',', (array) ($body['error-codes'] ?? []));
-        error_log('podo recaptcha: перевірку не пройдено (' . $codes . ')');
-        return new WP_Error('podo_captcha', __('Перевірка «Я не робот» не пройдена. Позначте прапорець ще раз і повторіть.', 'podo'), ['status' => 400]);
+    $body   = json_decode((string) wp_remote_retrieve_body($response), true);
+    $score  = isset($body['score']) ? (float) $body['score'] : 0.0;
+    $action = (string) ($body['action'] ?? '');
+
+    if (empty($body['success']) || $action !== PODO_RECAPTCHA_ACTION || $score < PODO_RECAPTCHA_MIN_SCORE) {
+        error_log(sprintf(
+            'podo recaptcha: відхилено (success=%s, action=%s, score=%.2f, codes=%s)',
+            empty($body['success']) ? '0' : '1',
+            $action !== '' ? $action : '—',
+            $score,
+            implode(',', (array) ($body['error-codes'] ?? []))
+        ));
+        return new WP_Error('podo_captcha', __('Перевірка захисту від спаму не пройдена. Оновіть сторінку і спробуйте ще раз, або зателефонуйте нам.', 'podo'), ['status' => 400]);
     }
 
     return true;

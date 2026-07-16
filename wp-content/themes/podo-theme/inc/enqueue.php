@@ -34,16 +34,28 @@ add_action('wp_enqueue_scripts', function () {
             ['in_footer' => true]
         );
         if (podo_recaptcha_enabled()) {
-            wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=uk', [], null, ['in_footer' => true]);
+            wp_enqueue_script(
+                'google-recaptcha',
+                'https://www.google.com/recaptcha/api.js?render=' . rawurlencode(podo_opt('recaptcha_site_key')) . '&hl=uk',
+                [],
+                null,
+                ['in_footer' => true]
+            );
         }
         wp_localize_script('podo-booking', 'podoBooking', [
-            'endpoint'  => esc_url_raw(rest_url('podo/v1/booking')),
-            'nonce'     => wp_create_nonce('podo_booking'),
-            'recaptcha' => podo_recaptcha_enabled(),
-            'i18n'      => [
+            'endpoint'     => esc_url_raw(rest_url('podo/v1/booking')),
+            'nonce'        => wp_create_nonce('podo_booking'),
+            // X-WP-Nonce: без нього REST знеособлює залогінених користувачів,
+            // і кастомний nonce (створений для них на сторінці) не проходить перевірку
+            'restNonce'    => wp_create_nonce('wp_rest'),
+            'recaptcha'    => podo_recaptcha_enabled(),
+            'recaptchaKey' => podo_opt('recaptcha_site_key'),
+            'i18n'         => [
                 'required'    => __("Заповніть, будь ласка, ім'я та телефон.", 'podo'),
-                'captcha'     => __('Підтвердіть, будь ласка, що ви не робот.', 'podo'),
-                'captchaWait' => __('Перевірка «Я не робот» ще завантажується — зачекайте секунду і спробуйте знову.', 'podo'),
+                'phone'       => __('Вкажіть повний номер телефону: +380 XX XXX XX XX.', 'podo'),
+                'captchaWait' => __('Захист від спаму ще завантажується — зачекайте секунду і спробуйте знову.', 'podo'),
+                'captchaFail' => __('Не вдалося пройти перевірку захисту від спаму. Оновіть сторінку або зателефонуйте нам.', 'podo'),
+                'stale'       => __('Сесія застаріла. Оновіть сторінку і спробуйте ще раз.', 'podo'),
                 'error'       => __('Щось пішло не так. Спробуйте ще раз або зателефонуйте.', 'podo'),
             ],
         ]);

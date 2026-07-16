@@ -59,4 +59,4 @@ rsync -az wp-content/uploads/ user@server:/opt/podo/wp-content/uploads/
 - [ ] Форма на /kontakty/ шле лист на реальну пошту (WP Mail SMTP → Email Test)
 - [ ] Адмінка працює, ACF PRO активний
 - [ ] `wp option get blog_public` = 1 (індексація дозволена)
-- [ ] **reCAPTCHA**: створити РЕАЛЬНІ ключі (https://www.google.com/recaptcha/admin/create, тип **reCAPTCHA v2 → прапорець «Я не робот»**, домен продакшену) і вставити в Налаштування сайту → Заявки. Тестові ключі Google (6LeIxAcT…) пропускають усіх — на проді їх лишати НЕ можна.
+- [ ] **reCAPTCHA v3**: створити ключі (https://www.google.com/recaptcha/admin/create, тип **reCAPTCHA v3**, домен продакшену) і вставити в Налаштування сайту → Заявки. Без ключів захист вимкнений (лишаються honeypot + rate-limit). Після ввімкнення: моніторити score у debug-лозі при скаргах на відхилені заявки (поріг 0.5 — константа PODO_RECAPTCHA_MIN_SCORE у inc/booking.php).
