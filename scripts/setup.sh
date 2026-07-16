@@ -124,7 +124,8 @@ if wp taxonomy list --field=name 2>/dev/null | grep -q "^service_cat$"; then
 fi
 
 log "Головне меню"
-if ! wp menu list --field=name 2>/dev/null | grep -q "^main$"; then
+# Меню — терм таксономії nav_menu; `wp menu list --field=name` повертає порожнє (wp-cli quirk)
+if ! wp term list nav_menu --field=slug 2>/dev/null | grep -qx "main"; then
   wp menu create "main" >/dev/null
   for pid in "$HOME_ID" "$SERVICES_ID" "$ABOUT_ID" "$BLOG_ID" "$PRICES_ID" "$REVIEWS_ID" "$CONTACTS_ID"; do
     wp menu item add-post main "$pid" >/dev/null
