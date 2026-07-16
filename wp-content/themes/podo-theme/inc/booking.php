@@ -49,7 +49,7 @@ function podo_booking_submit(WP_REST_Request $request) {
     }
 
     // reCAPTCHA (якщо ввімкнена в опціях)
-    $captcha_check = podo_booking_verify_recaptcha((string) $request->get_param('recaptcha'), $ip);
+    $captcha_check = podo_verify_recaptcha((string) $request->get_param('recaptcha'), $ip, PODO_RECAPTCHA_ACTION, PODO_RECAPTCHA_MIN_SCORE);
     if (is_wp_error($captcha_check)) {
         return $captcha_check;
     }
@@ -92,53 +92,6 @@ function podo_booking_submit(WP_REST_Request $request) {
     podo_booking_notify($post_id, $name, $phone, $service, $comment);
 
     return new WP_REST_Response(['success' => true], 200);
-}
-
-/**
- * Серверна перевірка Google reCAPTCHA v3: success + action + score.
- * Повертає true, якщо капча вимкнена (немає ключів) або токен валідний; інакше WP_Error.
- *
- * @return true|WP_Error
- */
-function podo_booking_verify_recaptcha(string $token, string $ip) {
-    if (!podo_recaptcha_enabled()) {
-        return true;
-    }
-
-    if ($token === '') {
-        return new WP_Error('podo_captcha', __('Не вдалося підтвердити, що ви не робот. Оновіть сторінку і спробуйте ще раз.', 'podo'), ['status' => 400]);
-    }
-
-    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
-        'timeout' => 8,
-        'body'    => [
-            'secret'   => podo_recaptcha_secret_key(),
-            'response' => $token,
-            'remoteip' => $ip,
-        ],
-    ]);
-
-    if (is_wp_error($response)) {
-        error_log('podo recaptcha: siteverify недоступний: ' . $response->get_error_message());
-        return new WP_Error('podo_captcha_http', __('Не вдалося перевірити захист від спаму. Спробуйте ще раз або зателефонуйте нам.', 'podo'), ['status' => 502]);
-    }
-
-    $body   = json_decode((string) wp_remote_retrieve_body($response), true);
-    $score  = isset($body['score']) ? (float) $body['score'] : 0.0;
-    $action = (string) ($body['action'] ?? '');
-
-    if (empty($body['success']) || $action !== PODO_RECAPTCHA_ACTION || $score < PODO_RECAPTCHA_MIN_SCORE) {
-        error_log(sprintf(
-            'podo recaptcha: відхилено (success=%s, action=%s, score=%.2f, codes=%s)',
-            empty($body['success']) ? '0' : '1',
-            $action !== '' ? $action : '—',
-            $score,
-            implode(',', (array) ($body['error-codes'] ?? []))
-        ));
-        return new WP_Error('podo_captcha', __('Перевірка захисту від спаму не пройдена. Оновіть сторінку і спробуйте ще раз, або зателефонуйте нам.', 'podo'), ['status' => 400]);
-    }
-
-    return true;
 }
 
 /**

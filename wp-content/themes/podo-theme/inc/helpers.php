@@ -104,6 +104,53 @@ function podo_recaptcha_enabled(): bool {
 }
 
 /**
+ * Серверна перевірка Google reCAPTCHA v3: success + action + score.
+ * Повертає true, якщо капча вимкнена (немає ключів) або токен валідний; інакше WP_Error.
+ *
+ * @return true|WP_Error
+ */
+function podo_verify_recaptcha(string $token, string $ip, string $action, float $min_score) {
+    if (!podo_recaptcha_enabled()) {
+        return true;
+    }
+
+    if ($token === '') {
+        return new WP_Error('podo_captcha', __('Не вдалося підтвердити, що ви не робот. Оновіть сторінку і спробуйте ще раз.', 'podo'), ['status' => 400]);
+    }
+
+    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+        'timeout' => 8,
+        'body'    => [
+            'secret'   => podo_recaptcha_secret_key(),
+            'response' => $token,
+            'remoteip' => $ip,
+        ],
+    ]);
+
+    if (is_wp_error($response)) {
+        error_log('podo recaptcha: siteverify недоступний: ' . $response->get_error_message());
+        return new WP_Error('podo_captcha_http', __('Не вдалося перевірити захист від спаму. Спробуйте ще раз або зателефонуйте нам.', 'podo'), ['status' => 502]);
+    }
+
+    $body       = json_decode((string) wp_remote_retrieve_body($response), true);
+    $score      = isset($body['score']) ? (float) $body['score'] : 0.0;
+    $got_action = (string) ($body['action'] ?? '');
+
+    if (empty($body['success']) || $got_action !== $action || $score < $min_score) {
+        error_log(sprintf(
+            'podo recaptcha: відхилено (success=%s, action=%s, score=%.2f, codes=%s)',
+            empty($body['success']) ? '0' : '1',
+            $got_action !== '' ? $got_action : '—',
+            $score,
+            implode(',', (array) ($body['error-codes'] ?? []))
+        ));
+        return new WP_Error('podo_captcha', __('Перевірка захисту від спаму не пройдена. Оновіть сторінку і спробуйте ще раз, або зателефонуйте нам.', 'podo'), ['status' => 400]);
+    }
+
+    return true;
+}
+
+/**
  * Repeater-поле з фолбеком (дефолти з макета до наповнення контентом).
  */
 function podo_repeater(string $name, array $default, $post_id = false): array {

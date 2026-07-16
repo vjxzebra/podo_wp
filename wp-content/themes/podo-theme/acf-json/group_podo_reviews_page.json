@@ -12,7 +12,12 @@
         ] },
         { "key": "field_podo_revpage_cta_title", "label": "CTA: заголовок", "name": "cta_title", "type": "text", "default_value": "Були на прийомі? Залиште відгук" },
         { "key": "field_podo_revpage_cta_text", "label": "CTA: текст", "name": "cta_text", "type": "textarea", "rows": 2, "default_value": "Ваша думка допомагає іншим пацієнтам зробити перший крок." },
-        { "key": "field_podo_revpage_cta_btn", "label": "CTA: кнопка", "name": "cta_btn_label", "type": "text", "default_value": "Написати відгук" }
+        { "key": "field_podo_revpage_cta_btn", "label": "CTA: кнопка", "name": "cta_btn_label", "type": "text", "default_value": "Написати відгук" },
+        { "key": "field_podo_revpage_modal_title", "label": "Попап: заголовок", "name": "modal_title", "type": "text", "default_value": "Ваш відгук" },
+        { "key": "field_podo_revpage_modal_text", "label": "Попап: текст", "name": "modal_text", "type": "textarea", "rows": 2, "default_value": "Розкажіть про свій досвід — відгук з’явиться на сайті після модерації." },
+        { "key": "field_podo_revpage_modal_consent", "label": "Попап: текст згоди", "name": "modal_consent_text", "type": "text", "default_value": "Натискаючи, ви погоджуєтесь на обробку персональних даних" },
+        { "key": "field_podo_revpage_modal_ok_title", "label": "Попап: заголовок успіху", "name": "modal_success_title", "type": "text", "default_value": "Дякуємо за відгук!" },
+        { "key": "field_podo_revpage_modal_ok_text", "label": "Попап: текст успіху", "name": "modal_success_text", "type": "textarea", "rows": 2, "default_value": "Ми опублікуємо його після модерації — зазвичай протягом одного-двох днів." }
     ],
     "location": [
         [ { "param": "page_template", "operator": "==", "value": "templates/reviews.php" } ]

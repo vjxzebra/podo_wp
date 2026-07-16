@@ -60,6 +60,42 @@ add_action('wp_enqueue_scripts', function () {
             ],
         ]);
     }
+
+    // Попап відгуку — лише на сторінці відгуків
+    if (is_page_template('templates/reviews.php')) {
+        wp_enqueue_script(
+            'podo-reviews',
+            $uri . '/assets/js/reviews.js',
+            [],
+            (string) filemtime($dir . '/assets/js/reviews.js'),
+            ['in_footer' => true]
+        );
+        if (podo_recaptcha_enabled()) {
+            wp_enqueue_script(
+                'google-recaptcha',
+                'https://www.google.com/recaptcha/api.js?render=' . rawurlencode(podo_recaptcha_site_key()) . '&hl=uk',
+                [],
+                null,
+                ['in_footer' => true]
+            );
+        }
+        wp_localize_script('podo-reviews', 'podoReview', [
+            'endpoint'     => esc_url_raw(rest_url('podo/v1/review')),
+            'nonce'        => wp_create_nonce('podo_review'),
+            'restNonce'    => wp_create_nonce('wp_rest'),
+            'recaptcha'    => podo_recaptcha_enabled(),
+            'recaptchaKey' => podo_recaptcha_site_key(),
+            'i18n'         => [
+                'required'    => __("Заповніть, будь ласка, ім'я і текст відгуку.", 'podo'),
+                'tooShort'    => __('Напишіть, будь ласка, хоча б кілька слів про ваш досвід.', 'podo'),
+                'rating'      => __('Оберіть оцінку від 1 до 5 зірок.', 'podo'),
+                'captchaWait' => __('Захист від спаму ще завантажується — зачекайте секунду і спробуйте знову.', 'podo'),
+                'captchaFail' => __('Не вдалося пройти перевірку захисту від спаму. Оновіть сторінку і спробуйте ще раз.', 'podo'),
+                'stale'       => __('Сесія застаріла. Оновіть сторінку і спробуйте ще раз.', 'podo'),
+                'error'       => __('Щось пішло не так. Спробуйте, будь ласка, ще раз.', 'podo'),
+            ],
+        ]);
+    }
 });
 
 // Прибираємо зайве зі стандартного head
@@ -70,9 +106,9 @@ add_action('init', function () {
     remove_action('wp_head', 'wp_shortlink_wp_head');
 });
 
-// Сторінку з формою не можна кешувати: в HTML запечені nonce і стан reCAPTCHA
+// Сторінки з формами не можна кешувати: в HTML запечені nonce і стан reCAPTCHA
 add_action('template_redirect', function () {
-    if (is_page_template('templates/contacts.php')) {
+    if (is_page_template('templates/contacts.php') || is_page_template('templates/reviews.php')) {
         if (!defined('DONOTCACHEPAGE')) {
             define('DONOTCACHEPAGE', true);
         }
