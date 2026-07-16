@@ -10,7 +10,7 @@
 
         { "key": "field_podo_opt_tab_contacts", "label": "Контакти", "name": "", "type": "tab" },
         { "key": "field_podo_opt_phone", "label": "Телефон", "name": "contact_phone", "type": "text", "default_value": "+380 67 123 45 67" },
-        { "key": "field_podo_opt_address", "label": "Адреса", "name": "contact_address", "type": "text", "default_value": "Хмельницький, вул. Проскурівська, 00" },
+        { "key": "field_podo_opt_address", "label": "Адреса", "name": "contact_address", "type": "text", "default_value": "Хмельницький, вул. Соборна, 12а" },
         { "key": "field_podo_opt_schedule", "label": "Графік роботи", "name": "contact_schedule", "type": "text", "default_value": "Пн–Сб, 9:00–19:00 · Нд — вихідний" },
 
         { "key": "field_podo_opt_tab_social", "label": "Соцмережі", "name": "", "type": "tab" },

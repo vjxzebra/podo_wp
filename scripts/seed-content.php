@@ -262,7 +262,8 @@ update_field('field_podo_opt_brand_name', 'Катерина Роженко', 'op
 update_field('field_podo_opt_brand_tagline', 'Подологія · Хмельницький', 'option');
 update_field('field_podo_opt_header_cta', 'Записатися', 'option');
 update_field('field_podo_opt_phone', '+380 67 123 45 67', 'option');
-update_field('field_podo_opt_address', 'Хмельницький, вул. Проскурівська, 00', 'option');
+update_field('field_podo_opt_address', 'Хмельницький, вул. Соборна, 12а', 'option');
+update_field('field_podo_opt_map_embed', '<iframe src="https://www.google.com/maps?q=' . rawurlencode('вулиця Соборна, 12а, Хмельницький, Хмельницька область, 29000') . '&z=17&hl=uk&output=embed"></iframe>', 'option');
 update_field('field_podo_opt_schedule', 'Пн–Сб, 9:00–19:00 · Нд — вихідний', 'option');
 update_field('field_podo_opt_instagram', 'https://www.instagram.com/', 'option');
 update_field('field_podo_opt_telegram', 'https://t.me/', 'option');

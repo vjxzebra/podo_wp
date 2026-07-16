@@ -8,7 +8,7 @@ defined('ABSPATH') || exit;
 get_header();
 
 $podo_phone    = podo_opt('contact_phone', '+380 67 123 45 67');
-$podo_address  = podo_opt('contact_address', 'Хмельницький, вул. Проскурівська, 00');
+$podo_address  = podo_opt('contact_address', 'Хмельницький, вул. Соборна, 12а');
 $podo_schedule = podo_opt('contact_schedule', 'Пн–Сб, 9:00–19:00 · Нд — вихідний');
 $podo_tg       = podo_opt('social_telegram');
 $podo_viber    = podo_opt('social_viber');

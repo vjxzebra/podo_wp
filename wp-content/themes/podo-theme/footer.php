@@ -6,7 +6,7 @@
 defined('ABSPATH') || exit;
 
 $podo_phone    = podo_opt('contact_phone', '+380 67 123 45 67');
-$podo_address  = podo_opt('contact_address', 'Хмельницький, вул. Проскурівська, 00');
+$podo_address  = podo_opt('contact_address', 'Хмельницький, вул. Соборна, 12а');
 $podo_schedule = podo_opt('contact_schedule', 'Пн–Сб, 9:00–19:00');
 $podo_brand    = podo_opt('brand_name', 'Катерина Роженко');
 $podo_logo     = podo_opt('brand_logo', get_template_directory_uri() . '/assets/img/logo.png');
