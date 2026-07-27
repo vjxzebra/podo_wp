@@ -67,9 +67,11 @@ rsync -az wp-content/uploads/ user@server:/opt/podo/wp-content/uploads/
 з Claude Code / Claude Desktop: `wp-content/mu-plugins/podo-mcp.php`.
 
 - **Ендпоінт:** `https://<домен>/wp-json/podo/v1/mcp`
-- **Автентифікація:** HTTP Basic — логін і пароль адміністратора WP **або** Application Password
-  (Користувачі → Профіль → Application Passwords; рекомендовано — його можна відкликати окремо).
-  Доступ лише користувачам із правом `manage_options` (адміністратори).
+- **Автентифікація:** `Authorization: Bearer <пароль застосунку>` — токен на пред'явника, логін
+  не потрібен (сервер знаходить адміністратора за токеном). Пароль застосунку створюється в
+  адмінці: Користувачі → Профіль → «Паролі застосунків» (внизу сторінки); відкликається там же.
+  Приймається і формат `Bearer логін:пароль-застосунку`, і для сумісності `Basic <логін:пароль>`
+  (пароль адмінки або застосунку). Доступ лише користувачам із `manage_options` (адміністратори).
 - **Інструменти:** `list_posts`, `get_post`, `create_post`, `update_post`, `delete_post`, `list_categories`.
   Контент записів — Gutenberg-розмітка; нові записи без `status` створюються чернетками.
 - **Захист:** на проді лише HTTPS; 10 невдалих спроб входу з IP → блокування на 15 хв;
@@ -78,5 +80,9 @@ rsync -az wp-content/uploads/ user@server:/opt/podo/wp-content/uploads/
 Підключення в Claude Code:
 
 ```bash
-claude mcp add --transport http podo-wp https://rozhenko.km.ua/wp-json/podo/v1/mcp --header "Authorization: Basic $(printf '%s:%s' 'ЛОГІН' 'ПАРОЛЬ' | base64 -w0)"
+claude mcp add --transport http podo-wp https://rozhenko.km.ua/wp-json/podo/v1/mcp --header "Authorization: Bearer ПАРОЛЬ_ЗАСТОСУНКУ"
 ```
+
+У клієнтах із полем «Bearer token» (Claude Desktop → Плагіни → MCP) достатньо вписати URL
+ендпоінта і сам пароль застосунку як токен — заголовок клієнт додасть сам. Пробіли в паролі
+застосунку можна лишати: WordPress їх ігнорує.

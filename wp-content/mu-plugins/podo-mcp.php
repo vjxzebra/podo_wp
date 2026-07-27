@@ -37,7 +37,7 @@ function podo_mcp_client_ip(): string {
     return isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '0.0.0.0';
 }
 
-function podo_mcp_basic_credentials(WP_REST_Request $request): ?array {
+function podo_mcp_auth_header(WP_REST_Request $request): string {
     $header = (string) $request->get_header('authorization');
     if ($header === '') {
         foreach (['HTTP_AUTHORIZATION', 'REDIRECT_HTTP_AUTHORIZATION'] as $key) {
@@ -47,6 +47,23 @@ function podo_mcp_basic_credentials(WP_REST_Request $request): ?array {
             }
         }
     }
+    return trim($header);
+}
+
+/**
+ * Токен на пред'явника: «Authorization: Bearer <пароль застосунку>».
+ */
+function podo_mcp_bearer_token(WP_REST_Request $request): ?string {
+    $header = podo_mcp_auth_header($request);
+    if ($header !== '' && stripos($header, 'bearer ') === 0) {
+        $token = trim(substr($header, 7));
+        return $token !== '' ? $token : null;
+    }
+    return null;
+}
+
+function podo_mcp_basic_credentials(WP_REST_Request $request): ?array {
+    $header = podo_mcp_auth_header($request);
     if ($header !== '' && stripos($header, 'basic ') === 0) {
         $decoded = base64_decode(substr($header, 6), true);
         if ($decoded !== false && strpos($decoded, ':') !== false) {
@@ -63,18 +80,57 @@ function podo_mcp_basic_credentials(WP_REST_Request $request): ?array {
     return null;
 }
 
+/**
+ * Автентифікація «чистим» токеном: логін не передається, тому пароль застосунку
+ * звіряється з паролями всіх адміністраторів сайту (їх одиниці).
+ * Токен виду «логін:пароль» теж приймається — тоді перевіряється лише цей користувач.
+ */
+function podo_mcp_user_by_token(string $token): ?WP_User {
+    if (!function_exists('wp_authenticate_application_password')) {
+        return null;
+    }
+
+    if (strpos($token, ':') !== false) {
+        [$login, $password] = explode(':', $token, 2);
+        $user = wp_authenticate_application_password(null, $login, $password);
+        return $user instanceof WP_User ? $user : null;
+    }
+
+    $admins = get_users([
+        'role'    => 'administrator',
+        'fields'  => ['ID', 'user_login'],
+        'number'  => 20,
+        'orderby' => 'ID',
+    ]);
+    foreach ($admins as $admin) {
+        $user = wp_authenticate_application_password(null, $admin->user_login, $token);
+        if ($user instanceof WP_User) {
+            return $user;
+        }
+    }
+    return null;
+}
+
 function podo_mcp_auth(WP_REST_Request $request) {
-    // На проді — тільки HTTPS: пароль не має літати відкритим текстом.
+    // На проді — тільки HTTPS: токен не має літати відкритим текстом.
     if (defined('WP_ENV') && WP_ENV === 'production' && !is_ssl()) {
         return new WP_Error('podo_mcp_https', 'MCP доступний лише через HTTPS.', ['status' => 403]);
     }
 
-    // Захист від DNS rebinding: браузерні запити з чужим Origin відхиляємо.
+    // Анти-DNS-rebinding: браузерний запит із чужого походження відхиляємо.
+    // Клієнти MCP або не шлють Origin, або шлють свій — він у списку дозволених.
     $origin = (string) $request->get_header('origin');
     if ($origin !== '') {
-        $site_host   = wp_parse_url(home_url(), PHP_URL_HOST);
-        $origin_host = wp_parse_url($origin, PHP_URL_HOST);
-        if (!$origin_host || !hash_equals((string) $site_host, (string) $origin_host)) {
+        $origin_host = (string) wp_parse_url($origin, PHP_URL_HOST);
+        $allowed     = apply_filters('podo_mcp_allowed_origins', [
+            (string) wp_parse_url(home_url(), PHP_URL_HOST),
+            'claude.ai',
+            'www.claude.ai',
+            'anthropic.com',
+            'localhost',
+            '127.0.0.1',
+        ]);
+        if ($origin_host === '' || !in_array($origin_host, $allowed, true)) {
             return new WP_Error('podo_mcp_origin', 'Заборонене походження запиту.', ['status' => 403]);
         }
     }
@@ -86,16 +142,34 @@ function podo_mcp_auth(WP_REST_Request $request) {
         return new WP_Error('podo_mcp_locked', 'Забагато невдалих спроб. Спробуйте пізніше.', ['status' => 429]);
     }
 
-    $creds = podo_mcp_basic_credentials($request);
-    if ($creds === null) {
-        return new WP_Error('podo_mcp_auth', 'Потрібна Basic-автентифікація.', ['status' => 401]);
+    $user  = null;
+    $token = podo_mcp_bearer_token($request);
+
+    if ($token !== null) {
+        // Основний шлях: токен на пред'явника = пароль застосунку WordPress.
+        $user = podo_mcp_user_by_token($token);
+        if (!$user instanceof WP_User) {
+            set_transient($fail_key, $failures + 1, PODO_MCP_AUTH_WINDOW);
+            return new WP_Error('podo_mcp_auth', 'Невірний токен (пароль застосунку).', ['status' => 401]);
+        }
+    } else {
+        // Сумісність: Basic із логіном і паролем адмінки або паролем застосунку.
+        $creds = podo_mcp_basic_credentials($request);
+        if ($creds === null) {
+            return new WP_Error(
+                'podo_mcp_auth',
+                'Потрібен заголовок Authorization: Bearer <пароль застосунку> або Basic <логін:пароль>.',
+                ['status' => 401]
+            );
+        }
+        $authenticated = wp_authenticate($creds[0], $creds[1]);
+        if (is_wp_error($authenticated)) {
+            set_transient($fail_key, $failures + 1, PODO_MCP_AUTH_WINDOW);
+            return new WP_Error('podo_mcp_auth', 'Невірний логін або пароль.', ['status' => 401]);
+        }
+        $user = $authenticated;
     }
 
-    $user = wp_authenticate($creds[0], $creds[1]);
-    if (is_wp_error($user)) {
-        set_transient($fail_key, $failures + 1, PODO_MCP_AUTH_WINDOW);
-        return new WP_Error('podo_mcp_auth', 'Невірний логін або пароль.', ['status' => 401]);
-    }
     if (!user_can($user, 'manage_options')) {
         return new WP_Error('podo_mcp_forbidden', 'Доступ дозволено лише адміністраторам.', ['status' => 403]);
     }
