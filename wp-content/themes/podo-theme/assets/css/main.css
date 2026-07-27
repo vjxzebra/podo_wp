@@ -693,6 +693,14 @@ input::placeholder, textarea::placeholder { color: #9FB0A6; }
 .article-body ul, .article-body ol { padding-left: 24px; color: #2E4038; line-height: 1.75; margin: 0 0 18px; }
 .article-body li { margin-bottom: 6px; }
 .article-body img { border-radius: 16px; }
+.article-body figure.wp-block-image { margin: 26px 0; }
+.article-body figure.wp-block-image img { width: 100%; height: auto; display: block; }
+.article-body figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--faint);
+  text-align: center;
+}
 .article-body blockquote {
   margin: 0 0 18px;
   padding: 18px 22px;

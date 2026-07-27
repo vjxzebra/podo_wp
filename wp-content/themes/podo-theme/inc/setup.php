@@ -19,6 +19,7 @@ add_action('after_setup_theme', function () {
 
     add_image_size('podo-card', 720, 450, true);   // картки статей 16/10
     add_image_size('podo-portrait', 640, 800, true); // портрети 4/5
+    add_image_size('podo-og', 1200, 630, true);    // Open Graph 1.91:1
 });
 
 // Безпека: XML-RPC не використовується — блокуємо ендпоінт повністю
