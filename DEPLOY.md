@@ -60,3 +60,23 @@ rsync -az wp-content/uploads/ user@server:/opt/podo/wp-content/uploads/
 - [ ] Адмінка працює, ACF PRO активний
 - [ ] `wp option get blog_public` = 1 (індексація дозволена)
 - [ ] **reCAPTCHA v3**: створити ключі (https://www.google.com/recaptcha/admin/create, тип **reCAPTCHA v3**, домен продакшену) і вписати в `.env` сервера (`RECAPTCHA_SITE_KEY`/`RECAPTCHA_SECRET_KEY` → константи `PODO_RECAPTCHA_*`, мають пріоритет над полями в Налаштування сайту → Заявки). Без ключів захист вимкнений (лишаються honeypot + rate-limit). Після ввімкнення: моніторити score у debug-лозі при скаргах на відхилені заявки (поріг 0.5 — константа PODO_RECAPTCHA_MIN_SCORE у inc/booking.php).
+
+## MCP-сервер (CRUD записів блогу)
+
+Сайт віддає MCP-сервер (Model Context Protocol, Streamable HTTP) для керування записами блогу
+з Claude Code / Claude Desktop: `wp-content/mu-plugins/podo-mcp.php`.
+
+- **Ендпоінт:** `https://<домен>/wp-json/podo/v1/mcp`
+- **Автентифікація:** HTTP Basic — логін і пароль адміністратора WP **або** Application Password
+  (Користувачі → Профіль → Application Passwords; рекомендовано — його можна відкликати окремо).
+  Доступ лише користувачам із правом `manage_options` (адміністратори).
+- **Інструменти:** `list_posts`, `get_post`, `create_post`, `update_post`, `delete_post`, `list_categories`.
+  Контент записів — Gutenberg-розмітка; нові записи без `status` створюються чернетками.
+- **Захист:** на проді лише HTTPS; 10 невдалих спроб входу з IP → блокування на 15 хв;
+  перевірка Origin (анти-DNS-rebinding).
+
+Підключення в Claude Code:
+
+```bash
+claude mcp add --transport http podo-wp https://rozhenko.km.ua/wp-json/podo/v1/mcp --header "Authorization: Basic $(printf '%s:%s' 'ЛОГІН' 'ПАРОЛЬ' | base64 -w0)"
+```

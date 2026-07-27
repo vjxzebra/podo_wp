@@ -8,6 +8,7 @@ x-wp-environment: &wp-environment
   WORDPRESS_DEBUG: 1
   WORDPRESS_CONFIG_EXTRA: |
     define('WP_ENV', 'development');
+    define('WP_ENVIRONMENT_TYPE', 'local');
     define('WP_DEBUG_LOG', true);
     define('WP_DEBUG_DISPLAY', false);
     define('DISALLOW_FILE_EDIT', true);
