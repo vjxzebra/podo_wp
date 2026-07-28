@@ -14,6 +14,7 @@
   var phoneInput = form.elements.phone;
 
   var PHONE_RE = /^\+380 \d{2} \d{3} \d{2} \d{2}$/;
+  var PHONE_PREFIX = '+380 ';
 
   function showError(message) {
     errorBox.textContent = message;
@@ -21,62 +22,102 @@
   }
 
   /* ---- Маска телефону: +380 XX XXX XX XX ---- */
-  function stripUaPrefix(d) {
-    if (d.indexOf('380') === 0) { return d.slice(3); }
-    if (d.indexOf('80') === 0 && d.length >= 11) { return d.slice(2); }
-    if (d.indexOf('0') === 0) { return d.slice(1); }
-    return d;
+  function uaSubscriberDigits(raw) {
+    var value = String(raw);
+    var digits = value.replace(/\D/g, '');
+
+    // Видалений частково префікс не має перетворюватися на цифри номера.
+    if (/^\s*\+(?:3(?:8(?:0)?)?)?\s*$/.test(value)) {
+      return '';
+    }
+
+    if (digits.indexOf('380') === 0) {
+      digits = digits.slice(3);
+    } else if (digits.indexOf('80') === 0 && digits.length >= 11) {
+      digits = digits.slice(2);
+    }
+
+    // Користувачі звично вводять 0 після вже видимого +380.
+    if (digits.indexOf('0') === 0) {
+      digits = digits.slice(1);
+    }
+
+    return digits.slice(0, 9);
   }
 
   function formatUaPhone(raw) {
-    var d = String(raw).replace(/\D/g, '');
-    // залишки префікса при стиранні ("+38", "+3")
-    if (d === '3' || d === '38' || d === '380') {
-      d = '';
-    } else {
-      d = stripUaPrefix(d);
-      // подвійний префікс: вставили "0..."/"380..." після автопідставленого "+380 "
-      if (d.length > 9) {
-        d = stripUaPrefix(d);
-      }
-    }
-    d = d.slice(0, 9);
-    var out = '+380';
-    if (d.length > 0) { out += ' ' + d.slice(0, 2); }
+    var d = uaSubscriberDigits(raw);
+    var out = PHONE_PREFIX;
+    if (d.length > 0) { out += d.slice(0, 2); }
     if (d.length > 2) { out += ' ' + d.slice(2, 5); }
     if (d.length > 5) { out += ' ' + d.slice(5, 7); }
     if (d.length > 7) { out += ' ' + d.slice(7, 9); }
     return out;
   }
 
+  function caretPosition(formatted, digitCount) {
+    if (digitCount <= 0) {
+      return PHONE_PREFIX.length;
+    }
+
+    var seen = 0;
+    for (var pos = PHONE_PREFIX.length; pos < formatted.length; pos++) {
+      if (/\d/.test(formatted.charAt(pos))) {
+        seen++;
+        if (seen === digitCount) {
+          return pos + 1;
+        }
+      }
+    }
+    return formatted.length;
+  }
+
   phoneInput.addEventListener('focus', function () {
     if (!phoneInput.value.trim()) {
-      phoneInput.value = '+380 ';
+      phoneInput.value = PHONE_PREFIX;
+      try { phoneInput.setSelectionRange(PHONE_PREFIX.length, PHONE_PREFIX.length); } catch (err) { /* type=tel у старих браузерах */ }
     }
   });
 
   phoneInput.addEventListener('blur', function () {
-    var digits = phoneInput.value.replace(/\D/g, '');
-    if (digits === '' || digits === '380') {
+    if (uaSubscriberDigits(phoneInput.value) === '') {
       phoneInput.value = '';
     }
   });
 
   phoneInput.addEventListener('input', function () {
-    // цифр перед кареткою у "сирому" значенні — щоб не стрибала каретка при редагуванні всередині
-    var caretDigits = phoneInput.value.slice(0, phoneInput.selectionStart || 0).replace(/\D/g, '').length;
+    var selectionStart = phoneInput.selectionStart === null
+      ? phoneInput.value.length
+      : phoneInput.selectionStart;
+    var caretDigits = uaSubscriberDigits(phoneInput.value.slice(0, selectionStart)).length;
     var formatted = formatUaPhone(phoneInput.value);
     if (formatted === phoneInput.value) {
       return;
     }
     phoneInput.value = formatted;
-    var pos = 0;
-    var seen = 0;
-    while (pos < formatted.length && seen < caretDigits) {
-      if (/\d/.test(formatted.charAt(pos))) { seen++; }
-      pos++;
-    }
+    var pos = caretPosition(formatted, caretDigits);
     try { phoneInput.setSelectionRange(pos, pos); } catch (err) { /* type=tel у старих браузерах */ }
+  });
+
+  phoneInput.addEventListener('keydown', function (e) {
+    var start = phoneInput.selectionStart;
+    var end = phoneInput.selectionEnd;
+    if (
+      e.key === 'Backspace'
+      && start !== null
+      && start === end
+      && start <= PHONE_PREFIX.length
+    ) {
+      e.preventDefault();
+    }
+  });
+
+  phoneInput.addEventListener('click', function () {
+    var start = phoneInput.selectionStart;
+    var end = phoneInput.selectionEnd;
+    if (start !== null && start === end && start < PHONE_PREFIX.length) {
+      try { phoneInput.setSelectionRange(PHONE_PREFIX.length, PHONE_PREFIX.length); } catch (err) { /* type=tel у старих браузерах */ }
+    }
   });
 
   /* ---- Відправлення ---- */

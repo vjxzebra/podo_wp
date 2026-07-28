@@ -48,6 +48,20 @@ function podo_seo_url(): string {
 }
 
 /**
+ * Заголовок для соцмереж. Для головної не додаємо назву сайту й tagline повторно.
+ */
+function podo_og_title(): string {
+    if (is_front_page()) {
+        return sprintf(
+            /* translators: %s: ім'я фахівця / назва бренду. */
+            __('%s — подолог у Хмельницькому', 'podo'),
+            podo_opt('brand_name', 'Катерина Роженко')
+        );
+    }
+    return wp_get_document_title();
+}
+
+/**
  * OG-зображення: мініатюра запису (кроп 1200×630) → дефолтна брендована картка теми.
  *
  * @return array{url:string, width:int, height:int}
@@ -59,8 +73,11 @@ function podo_og_image(): array {
             return ['url' => (string) $src[0], 'width' => (int) $src[1], 'height' => (int) $src[2]];
         }
     }
+    $default_path = get_template_directory() . '/assets/img/og-default.png';
+    $default_url  = get_template_directory_uri() . '/assets/img/og-default.png';
+
     return [
-        'url'    => get_template_directory_uri() . '/assets/img/og-default.png',
+        'url'    => add_query_arg('ver', (string) filemtime($default_path), $default_url),
         'width'  => 1200,
         'height' => 630,
     ];
@@ -68,11 +85,13 @@ function podo_og_image(): array {
 
 add_action('wp_head', function () {
     $description = trim(podo_seo_description());
-    $title       = wp_get_document_title();
+    $title       = podo_og_title();
     $url         = podo_seo_url();
     $image       = podo_og_image();
     $site_name   = (string) get_bloginfo('name');
-    $image_alt   = is_singular() ? (string) get_the_title() : $site_name;
+    $image_alt   = is_front_page()
+        ? sprintf(__('%s — логотип', 'podo'), podo_opt('brand_name', 'Катерина Роженко'))
+        : (is_singular() ? (string) get_the_title() : $site_name);
 
     if ($description !== '') {
         echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
