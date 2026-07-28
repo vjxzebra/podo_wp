@@ -124,6 +124,7 @@ add_filter('manage_booking_posts_columns', function ($columns) {
     $columns['booking_phone']   = __('Телефон', 'podo');
     $columns['booking_service'] = __('Послуга', 'podo');
     $columns['booking_status']  = __('Статус', 'podo');
+    $columns['booking_crm']     = __('CRM', 'podo');
     $columns['date']            = __('Дата', 'podo');
     return $columns;
 });
@@ -141,6 +142,15 @@ add_action('manage_booking_posts_custom_column', function ($column, $post_id) {
         } else {
             echo '<span style="background:#FDECEA;color:#B3261E;padding:3px 10px;border-radius:999px;font-weight:600;">' . esc_html__('Нова', 'podo') . '</span>';
         }
+    }
+    if ($column === 'booking_crm') {
+        $status = (string) get_field('booking_crm_status', $post_id);
+        $labels = [
+            'sent'     => __('Надіслано', 'podo'),
+            'failed'   => __('Помилка', 'podo'),
+            'disabled' => __('Вимкнено', 'podo'),
+        ];
+        echo esc_html($labels[$status] ?? '—');
     }
 }, 10, 2);
 

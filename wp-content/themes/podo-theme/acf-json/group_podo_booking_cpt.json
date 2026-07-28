@@ -6,7 +6,11 @@
         { "key": "field_podo_bkg_name", "label": "Ім'я", "name": "booking_name", "type": "text" },
         { "key": "field_podo_bkg_phone", "label": "Телефон", "name": "booking_phone", "type": "text" },
         { "key": "field_podo_bkg_service", "label": "Послуга", "name": "booking_service", "type": "text" },
-        { "key": "field_podo_bkg_comment", "label": "Коментар", "name": "booking_comment", "type": "textarea", "rows": 4 }
+        { "key": "field_podo_bkg_comment", "label": "Коментар", "name": "booking_comment", "type": "textarea", "rows": 4 },
+        { "key": "field_podo_bkg_crm_status", "label": "CRM: статус відправки", "name": "booking_crm_status", "type": "select", "choices": { "disabled": "Вимкнено", "sent": "Надіслано", "failed": "Помилка" }, "return_format": "value" },
+        { "key": "field_podo_bkg_crm_id", "label": "CRM: ID заявки", "name": "booking_crm_id", "type": "text" },
+        { "key": "field_podo_bkg_crm_public_number", "label": "CRM: номер заявки", "name": "booking_crm_public_number", "type": "text" },
+        { "key": "field_podo_bkg_crm_error", "label": "CRM: остання помилка", "name": "booking_crm_error", "type": "textarea", "rows": 3 }
     ],
     "location": [
         [ { "param": "post_type", "operator": "==", "value": "booking" } ]

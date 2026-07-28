@@ -104,6 +104,24 @@ function podo_recaptcha_enabled(): bool {
 }
 
 /**
+ * Налаштування CRM для серверної відправки заявок.
+ * Константи з оточення мають пріоритет над ACF, щоб за потреби тримати секрети поза БД.
+ */
+function podo_crm_booking_base_url(): string {
+    if (defined('PODO_CRM_BOOKING_BASE_URL') && PODO_CRM_BOOKING_BASE_URL !== '') {
+        return (string) PODO_CRM_BOOKING_BASE_URL;
+    }
+    return podo_opt('crm_booking_base_url', 'https://crm.rozhenko.km.ua/');
+}
+
+function podo_crm_booking_token(): string {
+    if (defined('PODO_CRM_BOOKING_TOKEN') && PODO_CRM_BOOKING_TOKEN !== '') {
+        return (string) PODO_CRM_BOOKING_TOKEN;
+    }
+    return podo_opt('crm_booking_token');
+}
+
+/**
  * Серверна перевірка Google reCAPTCHA v3: success + action + score.
  * Повертає true, якщо капча вимкнена (немає ключів) або токен валідний; інакше WP_Error.
  *

@@ -89,9 +89,73 @@ function podo_booking_submit(WP_REST_Request $request) {
 
     set_transient($key, $count + 1, PODO_BOOKING_RATE_WINDOW);
 
+    podo_booking_send_to_crm($post_id, $name, $phone, $service, $comment);
     podo_booking_notify($post_id, $name, $phone, $service, $comment);
 
     return new WP_REST_Response(['success' => true], 200);
+}
+
+/**
+ * Відправка заявки в Podoria CRM через server-side integration.
+ */
+function podo_booking_send_to_crm(int $post_id, string $name, string $phone, string $service, string $comment): void {
+    $base_url = untrailingslashit(podo_crm_booking_base_url());
+    $token    = podo_crm_booking_token();
+
+    if ($base_url === '' || $token === '') {
+        update_field('booking_crm_status', 'disabled', $post_id);
+        return;
+    }
+
+    $payload = [
+        'source'             => 'WEBSITE',
+        'client_name'        => mb_substr($name, 0, 160),
+        'phone'              => mb_substr($phone, 0, 32),
+        'service'            => mb_substr($service, 0, 160),
+        'message'            => mb_substr($comment, 0, 2000),
+        'external_reference' => mb_substr('wp-booking-' . $post_id, 0, 160),
+    ];
+
+    $response = wp_remote_post($base_url . '/api/v1/integrations/booking-requests', [
+        'timeout' => 12,
+        'headers' => [
+            'Authorization'   => 'Bearer ' . $token,
+            'Content-Type'    => 'application/json',
+            'Accept'          => 'application/json',
+            'Idempotency-Key' => 'podo-wp-booking-' . $post_id,
+        ],
+        'body' => wp_json_encode($payload, JSON_UNESCAPED_UNICODE),
+    ]);
+
+    if (is_wp_error($response)) {
+        podo_booking_mark_crm_failed($post_id, $response->get_error_message());
+        return;
+    }
+
+    $code = (int) wp_remote_retrieve_response_code($response);
+    $body = json_decode((string) wp_remote_retrieve_body($response), true);
+
+    if ($code === 200 || $code === 201) {
+        update_field('booking_crm_status', 'sent', $post_id);
+        update_field('booking_crm_id', sanitize_text_field((string) ($body['id'] ?? '')), $post_id);
+        update_field('booking_crm_public_number', sanitize_text_field((string) ($body['public_number'] ?? '')), $post_id);
+        update_field('booking_crm_error', '', $post_id);
+        return;
+    }
+
+    $message = is_array($body) && isset($body['message'])
+        ? (string) $body['message']
+        : (string) wp_remote_retrieve_body($response);
+    podo_booking_mark_crm_failed($post_id, sprintf('HTTP %d: %s', $code, $message));
+}
+
+/**
+ * Позначає заявку як не відправлену в CRM, не ламаючи сабміт форми на сайті.
+ */
+function podo_booking_mark_crm_failed(int $post_id, string $message): void {
+    update_field('booking_crm_status', 'failed', $post_id);
+    update_field('booking_crm_error', mb_substr($message, 0, 1000), $post_id);
+    error_log(sprintf('podo booking CRM: заявку #%d не відправлено: %s', $post_id, $message));
 }
 
 /**
@@ -149,7 +213,16 @@ add_filter('acf/load_field', function ($field) {
     if (!is_admin() || empty($field['name'])) {
         return $field;
     }
-    $readonly = ['booking_name', 'booking_phone', 'booking_service', 'booking_comment'];
+    $readonly = [
+        'booking_name',
+        'booking_phone',
+        'booking_service',
+        'booking_comment',
+        'booking_crm_status',
+        'booking_crm_id',
+        'booking_crm_public_number',
+        'booking_crm_error',
+    ];
     if (in_array($field['name'], $readonly, true) && get_post_type() === 'booking') {
         $field['readonly'] = 1;
     }

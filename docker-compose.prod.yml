@@ -23,6 +23,8 @@ services:
         define('WPMS_SMTP_AUTOTLS', true);
         define('PODO_RECAPTCHA_SITE_KEY', '${RECAPTCHA_SITE_KEY}');
         define('PODO_RECAPTCHA_SECRET_KEY', '${RECAPTCHA_SECRET_KEY}');
+        define('PODO_CRM_BOOKING_BASE_URL', '${CRM_BOOKING_BASE_URL:-}');
+        define('PODO_CRM_BOOKING_TOKEN', '${CRM_BOOKING_TOKEN:-}');
 
   wpcli:
     environment:

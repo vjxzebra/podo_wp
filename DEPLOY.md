@@ -60,6 +60,7 @@ rsync -az wp-content/uploads/ user@server:/opt/podo/wp-content/uploads/
 - [ ] Адмінка працює, ACF PRO активний
 - [ ] `wp option get blog_public` = 1 (індексація дозволена)
 - [ ] **reCAPTCHA v3**: створити ключі (https://www.google.com/recaptcha/admin/create, тип **reCAPTCHA v3**, домен продакшену) і вписати в `.env` сервера (`RECAPTCHA_SITE_KEY`/`RECAPTCHA_SECRET_KEY` → константи `PODO_RECAPTCHA_*`, мають пріоритет над полями в Налаштування сайту → Заявки). Без ключів захист вимкнений (лишаються honeypot + rate-limit). Після ввімкнення: моніторити score у debug-лозі при скаргах на відхилені заявки (поріг 0.5 — константа PODO_RECAPTCHA_MIN_SCORE у inc/booking.php).
+- [ ] **CRM для заявок**: у WordPress відкрити Налаштування сайту → Заявки і заповнити `CRM: URL системи` (`https://crm.rozhenko.km.ua/`) та `CRM: токен для заявок`. Альтернатива для прод-сервера — змінні `.env`: `CRM_BOOKING_BASE_URL` і `CRM_BOOKING_TOKEN`, вони мають пріоритет над полями адмінки.
 
 ## MCP-сервер (CRUD записів блогу)
 
